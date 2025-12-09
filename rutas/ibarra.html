@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruta Pimampiro - Ibarra | Cooperativa Oriental</title>
+    <meta name="description" content="Horarios y precios de la ruta Pimampiro - Ibarra. Salidas cada 15 minutos todos los días. Viaja rápido y seguro a la Ciudad Blanca.">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="https://coop-pimampiro.github.io/img/coop_pimam_logo.ico" type="image/x-icon">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Iconos (FontAwesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, h4, h5, h6, .font-heading {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        /* COLORES CORPORATIVOS */
+        .text-oriental-teal { color: #00897b; }
+        .bg-oriental-teal { background-color: #00897b; }
+        .bg-oriental-dark { background-color: #004d40; }
+        .text-oriental-dark { color: #004d40; }
+        .text-oriental-orange { color: #fb8c00; }
+        .bg-oriental-orange { background-color: #fb8c00; }
+        .border-oriental-gold { border-color: #c5a017; }
+        .text-oriental-gold { color: #c5a017; }
+
+        /* Banner de Cabecera Específico para Ibarra */
+        .page-header {
+            background-image: linear-gradient(rgba(0, 77, 64, 0.7), rgba(0, 77, 64, 0.6)), url('https://coop-pimampiro.github.io/img/fotos/ibarra.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Submenú Dropdown */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 100;
+            border-top: 3px solid #fb8c00;
+            border-radius: 0 0 8px 8px;
+        }
+        .group:hover .dropdown-menu {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Tabla de Precios Personalizada */
+        .price-card {
+            transition: all 0.3s ease;
+        }
+        .price-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+
+        /* ESTILOS TIMELINE */
+        .timeline-container {
+            max-height: 500px; /* Ajustado para dar espacio al selector fijo */
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #fb8c00 #f3f4f6;
+            padding-right: 10px;
+        }
+        .timeline-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .timeline-container::-webkit-scrollbar-track {
+            background: #f3f4f6;
+        }
+        .timeline-container::-webkit-scrollbar-thumb {
+            background-color: #fb8c00;
+            border-radius: 20px;
+        }
+
+        /* Línea continua que se adapta al scroll */
+        .timeline-line {
+            position: absolute;
+            left: 21px; 
+            top: 24px; 
+            bottom: 24px;
+            width: 6px; 
+            z-index: 0;
+            border-radius: 4px;
+        }
+        
+        .line-ida { background-color: #fb8c00; }
+        .line-vuelta { background-color: #00897b; }
+
+        .stop-item {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stop-dot {
+            width: 1.5rem; /* w-6 */
+            height: 1.5rem; /* h-6 */
+            background-color: white;
+            border-radius: 9999px;
+            border-style: solid;
+            border-width: 4px;
+            margin-left: 0.6rem;
+        }
+
+        /* Tabs Styles */
+        .tab-btn.active {
+            border-bottom: 4px solid #fb8c00;
+            color: #004d40;
+            font-weight: 800;
+            background-color: #fff7ed;
+        }
+        .tab-btn {
+            color: #6b7280;
+            font-weight: 600;
+            border-bottom: 4px solid transparent;
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Botón WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="../" class="flex items-center gap-3">
+                        <img src="https://coop-pimampiro.github.io/img/coop_pimam_logo.png" alt="Logo Oriental" class="h-14 w-auto drop-shadow-md">
+                        <div class="flex flex-col">
+                            <span class="font-heading font-extrabold text-2xl tracking-tight text-oriental-orange" style="text-shadow: 1px 1px 0px rgba(0,0,0,0.1);">ORIENTAL</span>
+                            <span class="text-xs font-bold text-oriental-teal tracking-widest uppercase">Pimampiro</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Menú Desktop -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="../" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Inicio</a>
+                    
+                    <!-- Menú Desplegable "Rutas" (Activo) -->
+                    <div class="relative group h-full flex items-center">
+                        <a href="../" class="text-oriental-teal font-bold transition flex items-center gap-1 cursor-pointer py-6 border-b-2 border-oriental-orange">
+                            Rutas <i class="fa-solid fa-chevron-down text-xs opacity-70"></i>
+                        </a>
+                        <div class="dropdown-menu top-16 left-0">
+                            <!-- Ibarra Activo -->
+                            <a href="ibarra" class="block px-4 py-3 text-sm font-bold text-oriental-orange bg-orange-50 transition border-b border-gray-100">
+                                <i class="fa-solid fa-location-dot mr-2 text-oriental-teal"></i> Ibarra
+                            </a>
+                            <a href="tulcan" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-oriental-orange transition border-b border-gray-100">
+                                <i class="fa-solid fa-location-dot mr-2 text-oriental-teal"></i> Tulcán
+                            </a>
+                            <a href="quito" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-oriental-orange transition">
+                                <i class="fa-solid fa-location-dot mr-2 text-oriental-teal"></i> Quito
+                            </a>
+                        </div>
+                    </div>
+
+                    <a href="../sobre_nosotros" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Sobre Nosotros</a>
+                    <a href="../contacto" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Contacto</a>
+                    
+                    <a href="../ticket" class="bg-oriental-orange text-white px-6 py-2 rounded-full font-bold flex items-center gap-2 hover:bg-orange-600 shadow-md transition transform hover:-translate-y-1">
+                        <i class="fa-solid fa-ticket"></i> Comprar Boleto
+                    </a>
+                </div>
+
+                <!-- Botón Menú Móvil -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-oriental-teal focus:outline-none">
+                        <i class="fa-solid fa-bars text-3xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-oriental-gold">
+            <div class="px-4 pt-2 pb-6 space-y-1">
+                <a href="../index" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Inicio</a>
+                <div class="block px-3 py-2 text-base font-medium text-gray-600">
+                    <span class="block mb-2 font-bold text-oriental-teal">Rutas</span>
+                    <div class="pl-4 space-y-2 border-l-2 border-oriental-orange">
+                        <a href="../rutas" class="block text-sm text-gray-600 hover:text-oriental-orange">Ver todas</a>
+                        <a href="ibarra" class="block text-sm font-bold text-oriental-orange">→ Ibarra</a>
+                        <a href="tulcan" class="block text-sm text-gray-600 hover:text-oriental-orange">→ Tulcán</a>
+                        <a href="quito" class="block text-sm text-gray-600 hover:text-oriental-orange">→ Quito</a>
+                    </div>
+                </div>
+                <a href="../sobre_nosotros" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Sobre Nosotros</a>
+                <a href="../contacto" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Contacto</a>
+                <a href="../ticket" class="block px-3 py-3 mt-4 text-center rounded-md text-base font-bold bg-oriental-orange text-white">
+                    <i class="fa-solid fa-ticket"></i> Comprar Boleto
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header (Banner Ibarra) -->
+    <header class="page-header h-96 relative flex items-center justify-center text-center px-4 mt-20">
+        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-80"></div>
+        <div class="max-w-4xl mx-auto text-white z-10">
+            <div class="inline-block bg-oriental-orange px-4 py-1 rounded-full text-sm font-bold tracking-wider mb-4 shadow-lg animate-bounce">
+                RUTA FRECUENTE
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 drop-shadow-xl font-heading">
+                Pimampiro – Ibarra
+            </h1>
+            <p class="text-lg md:text-xl font-medium text-gray-100 flex items-center justify-center gap-2">
+                <i class="fa-solid fa-location-dot text-oriental-orange"></i> Terminal Terrestre Ibarra
+            </p>
+        </div>
+    </header>
+
+    <!-- Información de la Ruta -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="flex flex-col lg:flex-row gap-12">
+                
+                <!-- Columna Izquierda: Información Técnica y Precios -->
+                <div class="lg:w-2/3 space-y-12">
+                    
+                    <!-- Intro -->
+                    <div>
+                        <h2 class="text-3xl font-heading font-bold text-oriental-dark mb-4 border-l-4 border-oriental-orange pl-4">Información General</h2>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            Nuestra ruta más popular y frecuente. Conectamos Pimampiro con la Ciudad Blanca de manera rápida y eficiente. Ideal para quienes viajan diariamente por trabajo, estudios o negocios.
+                        </p>
+                    </div>
+
+                    <!-- Datos Técnicos -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Capacidad -->
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 flex items-start gap-4">
+                            <div class="bg-teal-100 text-oriental-teal p-3 rounded-lg text-2xl">
+                                <i class="fa-solid fa-chair"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Capacidad</h4>
+                                <p class="text-gray-600 text-sm mt-1">41 Asientos</p>
+                                <p class="text-gray-500 text-xs">+ 2 Tripulación</p>
+                            </div>
+                        </div>
+
+                        <!-- Frecuencia -->
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 flex items-start gap-4">
+                            <div class="bg-orange-100 text-oriental-orange p-3 rounded-lg text-2xl">
+                                <i class="fa-solid fa-stopwatch"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Frecuencia</h4>
+                                <p class="text-gray-600 text-sm mt-1">Diaria</p>
+                                <p class="text-gray-500 text-xs font-bold text-oriental-orange">Cada 15 min</p>
+                            </div>
+                        </div>
+
+                        <!-- Tiempo de Viaje -->
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 flex items-start gap-4">
+                            <div class="bg-teal-100 text-oriental-teal p-3 rounded-lg text-2xl">
+                                <i class="fa-solid fa-hourglass-half"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Tiempo</h4>
+                                <p class="text-gray-600 text-sm mt-1">1h 30m</p>
+                                <p class="text-gray-500 text-xs">Aproximado</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Precios -->
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                            <i class="fa-solid fa-tag text-oriental-orange"></i> Tarifas
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Precio Normal -->
+                            <div class="price-card bg-white border-2 border-oriental-teal rounded-2xl p-6 text-center shadow-sm relative overflow-hidden">
+                                <div class="absolute top-0 right-0 bg-oriental-teal text-white text-xs font-bold px-3 py-1 rounded-bl-lg">ESTÁNDAR</div>
+                                <p class="text-gray-500 text-sm font-bold uppercase tracking-wide">Pasaje Normal</p>
+                                <div class="text-5xl font-extrabold text-oriental-dark my-4">$1,40</div>
+                                <p class="text-gray-400 text-xs">Por persona / solo ida</p>
+                            </div>
+
+                            <!-- Precio Especial -->
+                            <div class="price-card bg-white border-2 border-oriental-orange rounded-2xl p-6 text-center shadow-sm relative overflow-hidden">
+                                <div class="absolute top-0 right-0 bg-oriental-orange text-white text-xs font-bold px-3 py-1 rounded-bl-lg">PREFERENCIAL</div>
+                                <p class="text-gray-500 text-sm font-bold uppercase tracking-wide">Tarifa Especial (50%)</p>
+                                <div class="text-5xl font-extrabold text-oriental-orange my-4">$0,70</div>
+                                <p class="text-gray-400 text-xs">Discapacidad, Tercera Edad, Niños, Embarazadas</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NUEVA SECCIÓN: Recorrido y Paradas -->
+                    <div id="recorrido" class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-6 bg-oriental-dark text-white">
+                            <h3 class="text-xl font-bold flex items-center gap-2">
+                                <i class="fa-solid fa-route text-oriental-orange"></i> Recorrido y Paradas
+                            </h3>
+                            <p class="text-sm text-gray-300 mt-1">Selecciona el horario de salida para ver la estimación exacta en cada parada.</p>
+                        </div>
+                        
+                        <!-- Tabs Header -->
+                        <div class="flex border-b border-gray-200">
+                            <button onclick="switchTab('ida')" id="tab-ida" class="tab-btn active flex-1 py-4 text-center hover:bg-gray-50 transition focus:outline-none flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-arrow-right"></i> <span>Ida</span>
+                            </button>
+                            <button onclick="switchTab('vuelta')" id="tab-vuelta" class="tab-btn flex-1 py-4 text-center hover:bg-gray-50 transition focus:outline-none flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-arrow-left"></i> <span>Vuelta</span>
+                            </button>
+                        </div>
+
+                        <!-- Tab Content: IDA -->
+                        <div id="content-ida" class="tab-content active bg-white">
+                            <!-- Selector de Turno IDA (Fuera del Scroll) -->
+                            <div class="p-6 pb-2 border-b border-gray-100 bg-white z-20">
+                                <label for="selector-ida" class="block text-sm font-bold text-gray-700 mb-2">
+                                    <i class="fa-regular fa-clock text-oriental-orange mr-1"></i> Seleccione Hora de Salida (Pimampiro):
+                                </label>
+                                <div class="relative">
+                                    <!-- Agregado 'appearance-none' para quitar la flecha nativa -->
+                                    <select id="selector-ida" class="appearance-none block w-full pl-3 pr-10 py-3 text-base border-gray-300 focus:outline-none focus:ring-oriental-orange focus:border-oriental-orange sm:text-sm rounded-lg bg-gray-50 border shadow-sm cursor-pointer">
+                                        <!-- Se llena con JS -->
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-700">
+                                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Lista con Scroll (Separada del selector) -->
+                            <div class="timeline-container p-6 pt-2">
+                                <!-- Wrapper relativo para que la línea crezca con el contenido -->
+                                <div class="relative pt-2">
+                                    <div class="timeline-line line-ida"></div>
+                                    <div id="list-ida" class="space-y-4 pt-1 pb-1">
+                                        <!-- Se llena con JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab Content: VUELTA -->
+                        <div id="content-vuelta" class="tab-content bg-white">
+                            <!-- Selector de Turno VUELTA (Fuera del Scroll) -->
+                            <div class="p-6 pb-2 border-b border-gray-100 bg-white z-20">
+                                <label for="selector-vuelta" class="block text-sm font-bold text-gray-700 mb-2">
+                                    <i class="fa-regular fa-clock text-oriental-teal mr-1"></i> Seleccione Hora de Salida (Ibarra):
+                                </label>
+                                <div class="relative">
+                                    <!-- Agregado 'appearance-none' para quitar la flecha nativa -->
+                                    <select id="selector-vuelta" class="appearance-none block w-full pl-3 pr-10 py-3 text-base border-gray-300 focus:outline-none focus:ring-oriental-teal focus:border-oriental-teal sm:text-sm rounded-lg bg-gray-50 border shadow-sm cursor-pointer">
+                                        <!-- Se llena con JS -->
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-700">
+                                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Lista con Scroll (Separada del selector) -->
+                            <div class="timeline-container p-6 pt-2">
+                                <!-- Wrapper relativo para que la línea crezca con el contenido -->
+                                <div class="relative pt-2">
+                                    <div class="timeline-line line-vuelta"></div>
+                                    <div id="list-vuelta" class="space-y-4 pt-1 pb-1">
+                                        <!-- Se llena con JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Columna Derecha: Itinerario (Sticky) -->
+                <div class="lg:w-1/3">
+                    <div class="bg-oriental-dark text-white rounded-2xl shadow-2xl p-8 sticky top-28">
+                        <div class="flex items-center justify-between mb-8">
+                            <h3 class="text-2xl font-bold font-heading">Horarios</h3>
+                            <i class="fa-regular fa-clock text-3xl text-oriental-orange"></i>
+                        </div>
+
+                        <!-- Turnos Continuos -->
+                        <div class="relative border-l-2 border-gray-600 pl-6 pb-4">
+                            <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-oriental-orange border-2 border-oriental-dark"></div>
+                            <h4 class="text-lg font-bold text-oriental-orange mb-1">Servicio Continuo</h4>
+                            
+                            <div class="space-y-4 mt-4">
+                                <!-- Salida -->
+                                <div class="bg-white/10 p-4 rounded-lg">
+                                    <p class="text-sm text-gray-300 mb-1">Salidas desde Pimampiro</p>
+                                    <div class="flex justify-between items-end border-b border-gray-500 pb-2 mb-2">
+                                        <span class="text-xs text-gray-400">Primer Turno</span>
+                                        <span class="font-bold text-xl text-white">04:15</span>
+                                    </div>
+                                    <div class="flex justify-between items-end">
+                                        <span class="text-xs text-gray-400">Último Turno</span>
+                                        <span class="font-bold text-xl text-white">18:15</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-center text-gray-500">
+                                    <i class="fa-solid fa-arrow-right-arrow-left transform rotate-90"></i>
+                                </div>
+
+                                <!-- Retorno -->
+                                <div class="bg-white/10 p-4 rounded-lg">
+                                    <p class="text-sm text-gray-300 mb-1">Retornos desde Ibarra</p>
+                                    <div class="flex justify-between items-end border-b border-gray-500 pb-2 mb-2">
+                                        <span class="text-xs text-gray-400">Primer Turno</span>
+                                        <span class="font-bold text-xl text-white">05:00</span>
+                                    </div>
+                                    <div class="flex justify-between items-end">
+                                        <span class="text-xs text-gray-400">Último Turno</span>
+                                        <span class="font-bold text-xl text-white">20:00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-gray-700 text-center">
+                            <div class="inline-block bg-oriental-teal px-4 py-2 rounded-lg mb-4">
+                                <p class="text-sm font-bold text-white"><i class="fa-solid fa-arrows-rotate mr-1"></i> Intervalo: 15 Minutos</p>
+                            </div>
+                            <a href="../ticket" class="block w-full bg-oriental-orange hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition shadow-lg">
+                                <i class="fa-solid fa-ticket mr-2"></i> Reservar Asiento
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-oriental-dark text-white pt-16 pb-8 border-t-4 border-oriental-gold">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <!-- Info Empresa -->
+                <div>
+                    <h3 class="text-xl font-heading font-bold mb-4 flex items-center gap-2 text-oriental-orange">
+                        <i class="fa-solid fa-bus"></i> ORIENTAL
+                    </h3>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                        Conectando destinos desde 1971. Seguridad, confort y la mejor atención en cada viaje.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/profile.php?id=61580118043717" target="_blank" class="bg-blue-600 hover:bg-blue-700 w-10 h-10 rounded-full flex items-center justify-center transition">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://wa.me/593980048508" target="_blank" class="bg-green-500 hover:bg-green-600 w-10 h-10 rounded-full flex items-center justify-center transition">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Enlaces Rápidos -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4 text-oriental-gold">Navegación</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="../index" class="hover:text-oriental-orange transition">Inicio</a></li>
+                        <li><a href="../rutas" class="hover:text-oriental-orange transition">Rutas y Horarios</a></li>
+                        <li><a href="../sobre_nosotros" class="hover:text-oriental-orange transition">Quiénes Somos</a></li>
+                        <li><a href="../contacto" class="hover:text-oriental-orange transition">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contacto -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4 text-oriental-gold">Contáctanos</h4>
+                    <ul class="space-y-4 text-sm text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-phone mt-1 text-oriental-orange"></i>
+                            <span>+593 98 004 8508</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-envelope mt-1 text-oriental-orange"></i>
+                            <span>coop.oriental1971@gmail.com</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-location-arrow mt-1 text-oriental-orange"></i>
+                            <span>Pimampiro, Ecuador</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-teal-900 pt-8 text-center">
+                <p class="text-sm text-gray-400">&copy; 2025 Cooperativa de Transporte Oriental. <span class="text-gray-600">|</span> Pimampiro</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botón Flotante WhatsApp -->
+    <a href="https://wa.me/593980048508" class="whatsapp-float hover:shadow-orange-500/50" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Tabs Logic
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('content-' + tabName).classList.add('active');
+            document.getElementById('tab-' + tabName).classList.add('active');
+        }
+
+        // --- DATOS DE PARADAS ---
+        
+        // IDA: Pimampiro -> Ibarra
+        const stopsIda = [
+            { name: "Terminal Terrestre Pimampiro", lat: 0.39012771, lng: -77.941837 },
+            { name: "Parada P-P 1", lat: 0.39085962, lng: -77.941082 },
+            { name: "Parada P-P 2", lat: 0.39113538, lng: -77.940572 },
+            { name: "Parada P-P 3", lat: 0.39199584, lng: -77.939258 },
+            { name: "Parada P-P 4", lat: 0.39341611, lng: -77.940002 },
+            { name: "Parada P-P 5", lat: 0.39460624, lng: -77.940462 },
+            { name: "Parada P-P 6", lat: 0.39411070, lng: -77.938146 },
+            { name: "Parada P-P 7", lat: 0.40100059, lng: -77.937958 },
+            { name: "Parada P-P 8", lat: 0.41183303, lng: -77.945536 },
+            { name: "Parada P-P 9", lat: 0.41367524, lng: -77.946340 },
+            { name: "Parada P-P 10", lat: 0.42555368, lng: -77.961764 },
+            { name: "Parada P-P 11", lat: 0.42677698, lng: -77.962790 },
+            { name: "Parada P-P 12", lat: 0.43396334, lng: -77.966529 },
+            { name: "Juncal Bus Stop", lat: 0.4344473, lng: -77.966717 },
+            { name: "Parada P-i 2", lat: 0.4387387, lng: -77.995604 },
+            { name: "Parada P-i 3", lat: 0.4407379, lng: -77.999016 },
+            { name: "Parada P-i 4", lat: 0.4460121, lng: -78.004909 },
+            { name: "Parada P-i 5", lat: 0.4519229, lng: -78.008101 },
+            { name: "Parada P-i 6", lat: 0.462953, lng: -78.012188 },
+            { name: "Parada P-i 7", lat: 0.4685828, lng: -78.015685 },
+            { name: "Parada P-i 8", lat: 0.4688503, lng: -78.017861 },
+            { name: "Parada P-i 9", lat: 0.4679157, lng: -78.032729 },
+            { name: "Parada P-i 10", lat: 0.4703927, lng: -78.048362 },
+            { name: "Parada P-i 11", lat: 0.4725366, lng: -78.062122 },
+            { name: "Parada P-i 12", lat: 0.4731387, lng: -78.067088 },
+            { name: "Parada P-i 13", lat: 0.4759063, lng: -78.076072 },
+            { name: "Parada P-i 14", lat: 0.4767562, lng: -78.079392 },
+            { name: "Parada P-i 15", lat: 0.4833604, lng: -78.117417 },
+            { name: "Parada P-i 16", lat: 0.3898977, lng: -78.107501 },
+            { name: "Parada P-i 17", lat: 0.3881955, lng: -78.108076 },
+            { name: "Parada P-i 18", lat: 0.3841933, lng: -78.109599 },
+            { name: "Parada P-i 19", lat: 0.3769456, lng: -78.112234 },
+            { name: "Parada P-i 20", lat: 0.3702028, lng: -78.111501 },
+            { name: "Parada P-i 21", lat: 0.3611991, lng: -78.112051 },
+            { name: "Parada P-i 22", lat: 0.3613081, lng: -78.119526 },
+            { name: "Parada P-i 23", lat: 0.3546372, lng: -78.125498 },
+            { name: "Parada P-i 24", lat: 0.3466764, lng: -78.132346 },
+            { name: "Parada P-i 25", lat: 0.344748, lng: -78.129847 },
+            { name: "Ibarra Bus Terminal", lat: 0.345408, lng: -78.126604 }
+        ];
+
+        // VUELTA: Ibarra -> Pimampiro
+        const stopsVuelta = [
+            { name: "Ibarra Bus Terminal", lat: 0.345408, lng: -78.126604 },
+            { name: "Parada P-i 27", lat: 0.3435886, lng: -78.127169 },
+            { name: "Parada P-i 28", lat: 0.344761, lng: -78.129449 },
+            { name: "Parada P-i 29", lat: 0.3448502, lng: -78.129888 },
+            { name: "Parada P-i 30", lat: 0.3468022, lng: -78.132117 },
+            { name: "Parada P-i 31", lat: 0.3544709, lng: -78.125440 },
+            { name: "Parada P-i 32", lat: 0.3609421, lng: -78.119727 },
+            { name: "Parada P-i 21", lat: 0.3611991, lng: -78.112051 },
+            { name: "Parada P-i 20", lat: 0.3702028, lng: -78.111501 },
+            { name: "Parada P-i 19", lat: 0.3769456, lng: -78.112234 },
+            { name: "Parada P-i 18", lat: 0.3841933, lng: -78.109599 },
+            { name: "Parada P-i 17", lat: 0.3881955, lng: -78.108076 },
+            { name: "Parada P-i 16", lat: 0.3898977, lng: -78.107501 },
+            { name: "Parada P-i 15", lat: 0.4833604, lng: -78.117417 },
+            { name: "Parada P-i 14", lat: 0.4767562, lng: -78.079392 },
+            { name: "Parada P-i 33", lat: 0.4727152, lng: -78.066922 },
+            { name: "Parada P-i 34", lat: 0.4722987, lng: -78.062182 },
+            { name: "Parada P-i 35", lat: 0.4697477, lng: -78.046065 },
+            { name: "Parada P-i 36", lat: 0.4687171, lng: -78.018054 },
+            { name: "Parada P-i 37", lat: 0.4629322, lng: -78.012302 },
+            { name: "Parada P-i 38", lat: 0.4518827, lng: -78.008260 },
+            { name: "Parada P-i 39", lat: 0.4457626, lng: -78.005249 },
+            { name: "Parada P-i 40", lat: 0.4405973, lng: -77.999138 },
+            { name: "Parada P-i 41", lat: 0.4386159, lng: -77.995689 },
+            { name: "Parada P-i 42", lat: 0.4349002, lng: -77.968161 },
+            { name: "Parada P-P 12", lat: 0.4339633, lng: -77.966529 },
+            { name: "Parada P-P 11", lat: 0.426777, lng: -77.96279 },
+            { name: "Parada P-P 10", lat: 0.4254625, lng: -77.961758 },
+            { name: "Parada P-P 9", lat: 0.4136752, lng: -77.94634 },
+            { name: "Parada P-P 8", lat: 0.411833, lng: -77.945536 },
+            { name: "Parada P-P 7", lat: 0.4010006, lng: -77.937958 },
+            { name: "Parada P-P 14", lat: 0.3944471, lng: -77.938311 },
+            { name: "Parada P-P 15", lat: 0.3941983, lng: -77.941243 },
+            { name: "Parada P-P 16", lat: 0.3921082, lng: -77.941834 },
+            { name: "Parada P-P 17", lat: 0.3910163, lng: -77.941049 },
+            { name: "Terminal Terrestre Pimampiro", lat: 0.3901277, lng: -77.941837 }
+        ];
+
+        // --- LÓGICA DE TIEMPOS Y SELECTORES ---
+
+        // Función para generar array de horas ("HH:MM")
+        function generateTimeSlots(startTimeStr, endTimeStr, intervalMinutes) {
+            let slots = [];
+            let [startH, startM] = startTimeStr.split(':').map(Number);
+            let [endH, endM] = endTimeStr.split(':').map(Number);
+            
+            let date = new Date();
+            date.setHours(startH, startM, 0, 0);
+            
+            let endDate = new Date();
+            endDate.setHours(endH, endM, 0, 0);
+
+            while (date <= endDate) {
+                let timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+                slots.push(timeStr);
+                date.setMinutes(date.getMinutes() + intervalMinutes);
+            }
+            return slots;
+        }
+
+        // Llenar Selectores
+        function populateSelector(elementId, times) {
+            const selector = document.getElementById(elementId);
+            selector.innerHTML = '';
+            times.forEach(time => {
+                let option = document.createElement('option');
+                option.value = time;
+                option.text = `Salida: ${time}`;
+                selector.appendChild(option);
+            });
+        }
+
+        // Función renderizadora principal
+        function renderStops(containerId, stopsList, startTimeStr, colorClass, iconColor) {
+            const container = document.getElementById(containerId);
+            
+            // Configurar fecha base para cálculos
+            let [startHour, startMin] = startTimeStr.split(':').map(Number);
+            let currentDate = new Date();
+            currentDate.setHours(startHour, startMin, 0, 0);
+
+            // Duración total aproximada del viaje: 90 minutos
+            const totalTripMinutes = 90; 
+            const totalStops = stopsList.length;
+            const msPerSegment = (totalTripMinutes * 60 * 1000) / (totalStops - 1);
+
+            let html = '';
+
+            stopsList.forEach((stopObj, index) => {
+                const stopName = stopObj.name;
+                const stopLat = stopObj.lat;
+                const stopLng = stopObj.lng;
+
+                const timeString = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+                
+                const isFirst = index === 0;
+                const isLast = index === stopsList.length - 1;
+                
+                let iconHtml = '';
+                let textClass = 'text-gray-600';
+                
+                if (isFirst) {
+                    iconHtml = `<div class="w-12 h-12 bg-${iconColor} rounded-full flex items-center justify-center text-white z-10 shadow-lg border-4 border-white">
+                                    <i class="fa-solid fa-bus text-lg"></i>
+                                </div>`;
+                    textClass = `font-bold text-${iconColor} text-lg`;
+                } else if (isLast) {
+                    iconHtml = `<div class="w-12 h-12 bg-oriental-dark rounded-full flex items-center justify-center text-white z-10 shadow-lg border-4 border-white">
+                                    <i class="fa-solid fa-flag-checkered text-lg"></i>
+                                </div>`;
+                    textClass = 'font-bold text-oriental-dark text-lg';
+                } else {
+                    iconHtml = `<div class="stop-dot border-${colorClass}"></div>`;
+                }
+
+                let extraBadge = '';
+                if (isFirst) extraBadge = '<span class="text-xs font-bold text-white bg-green-500 px-2 rounded ml-2">Salida</span>';
+                if (isLast) extraBadge = '<span class="text-xs font-bold text-white bg-red-500 px-2 rounded ml-2">Llegada</span>';
+
+                const mapLink = `https://www.google.com/maps/search/?api=1&query=${stopLat},${stopLng}`;
+
+                html += `
+                    <div class="stop-item flex items-center gap-6">
+                        <div class="flex-shrink-0 w-12 flex justify-center">
+                            ${iconHtml}
+                        </div>
+                        <div class="flex-grow bg-gray-50 p-3 rounded-lg border border-gray-100 flex justify-between items-center hover:bg-white hover:shadow-sm transition">
+                            <div>
+                                <h5 class="${textClass}">${stopName} ${extraBadge}</h5>
+                                <a href="${mapLink}" target="_blank" class="inline-flex items-center gap-1 text-xs text-blue-500 hover:text-blue-700 font-semibold mt-1 hover:underline">
+                                    <i class="fa-solid fa-map-location-dot"></i> Ver en Mapa
+                                </a>
+                            </div>
+                            <div class="text-right">
+                                <span class="block font-mono font-bold text-gray-700 text-lg">${timeString}</span>
+                                <span class="text-xs text-gray-400">Estimado</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                if (!isLast) {
+                    currentDate = new Date(currentDate.getTime() + msPerSegment);
+                }
+            });
+
+            container.innerHTML = html;
+        }
+
+        // --- INICIALIZACIÓN ---
+
+        // 1. Configurar IDA
+        const timesIda = generateTimeSlots('04:15', '18:15', 15);
+        populateSelector('selector-ida', timesIda);
+        
+        // Renderizado inicial IDA
+        renderStops('list-ida', stopsIda, timesIda[0], 'orange-500', 'oriental-orange');
+
+        // Listener cambio IDA
+        document.getElementById('selector-ida').addEventListener('change', (e) => {
+            renderStops('list-ida', stopsIda, e.target.value, 'orange-500', 'oriental-orange');
+        });
+
+        // 2. Configurar VUELTA (05:00 a 20:00)
+        const timesVuelta = generateTimeSlots('05:00', '20:00', 15);
+        populateSelector('selector-vuelta', timesVuelta);
+
+        // Renderizado inicial VUELTA
+        renderStops('list-vuelta', stopsVuelta, timesVuelta[0], 'teal-600', 'oriental-teal');
+
+        // Listener cambio VUELTA
+        document.getElementById('selector-vuelta').addEventListener('change', (e) => {
+            renderStops('list-vuelta', stopsVuelta, e.target.value, 'teal-600', 'oriental-teal');
+        });
+
+    </script>
+</body>
+</html>

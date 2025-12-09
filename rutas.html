@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rutas y Horarios | Cooperativa de Transporte Oriental</title>
+    <meta name="description" content="Consulta nuestros horarios y frecuencias a Ibarra, Tulcán y Quito. Salidas diarias desde Pimampiro.">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="https://coop-pimampiro.github.io/img/coop_pimam_logo.ico" type="image/x-icon">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Iconos (FontAwesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, h4, h5, h6, .font-heading {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        /* COLORES CORPORATIVOS */
+        .text-oriental-teal { color: #00897b; }
+        .bg-oriental-teal { background-color: #00897b; }
+        .bg-oriental-dark { background-color: #004d40; }
+        .text-oriental-dark { color: #004d40; }
+        .text-oriental-orange { color: #fb8c00; }
+        .bg-oriental-orange { background-color: #fb8c00; }
+        .border-oriental-gold { border-color: #c5a017; }
+        .text-oriental-gold { color: #c5a017; }
+
+        /* Banner de Cabecera (Diferente al Hero del Home) */
+        .page-header {
+            background-image: linear-gradient(rgba(0, 77, 64, 0.85), rgba(0, 77, 64, 0.75)), url('https://coop-pimampiro.github.io/img/fotos/bus_003.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Animación suave para botones y tarjetas */
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        /* Submenú Dropdown (Igual que el Index) */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 100;
+            border-top: 3px solid #fb8c00;
+            border-radius: 0 0 8px 8px;
+        }
+        .group:hover .dropdown-menu {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Botón WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="/" class="flex items-center gap-3">
+                        <img src="https://coop-pimampiro.github.io/img/coop_pimam_logo.png" alt="Logo Oriental" class="h-14 w-auto drop-shadow-md">
+                        <div class="flex flex-col">
+                            <span class="font-heading font-extrabold text-2xl tracking-tight text-oriental-orange" style="text-shadow: 1px 1px 0px rgba(0,0,0,0.1);">ORIENTAL</span>
+                            <span class="text-xs font-bold text-oriental-teal tracking-widest uppercase">Pimampiro</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Menú Desktop -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Inicio</a>
+                    
+                    <!-- Menú Desplegable "Rutas" (Activo) -->
+                    <div class="relative group h-full flex items-center">
+                        <a href="rutas" class="text-oriental-teal font-bold transition flex items-center gap-1 cursor-pointer py-6">
+                            Rutas <i class="fa-solid fa-chevron-down text-xs opacity-70"></i>
+                        </a>
+                        <div class="dropdown-menu top-16 left-0">
+                            <a href="rutas/ibarra" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-oriental-orange transition border-b border-gray-100">
+                                <i class="fa-solid fa-location-dot mr-2 text-oriental-teal"></i> Ibarra
+                            </a>
+                            <a href="rutas/tulcan" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-oriental-orange transition border-b border-gray-100">
+                                <i class="fa-solid fa-location-dot mr-2 text-oriental-teal"></i> Tulcán
+                            </a>
+                            <a href="rutas/quito" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-oriental-orange transition">
+                                <i class="fa-solid fa-location-dot mr-2 text-oriental-teal"></i> Quito
+                            </a>
+                        </div>
+                    </div>
+
+                    <a href="sobre_nosotros" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Sobre Nosotros</a>
+                    <a href="contacto" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Contacto</a>
+                    
+                    <a href="ticket" class="bg-oriental-orange text-white px-6 py-2 rounded-full font-bold flex items-center gap-2 hover:bg-orange-600 shadow-md transition transform hover:-translate-y-1">
+                        <i class="fa-solid fa-ticket"></i> Comprar Boleto
+                    </a>
+                </div>
+
+                <!-- Botón Menú Móvil -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-oriental-teal focus:outline-none">
+                        <i class="fa-solid fa-bars text-3xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-oriental-gold">
+            <div class="px-4 pt-2 pb-6 space-y-1">
+                <a href="/" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Inicio</a>
+                <div class="block px-3 py-2 text-base font-medium text-gray-600">
+                    <span class="block mb-2 font-bold text-oriental-teal">Rutas</span>
+                    <div class="pl-4 space-y-2 border-l-2 border-oriental-orange">
+                        <a href="rutas" class="block text-sm font-bold text-oriental-orange">Ver todas</a>
+                        <a href="rutas/ibarra" class="block text-sm text-gray-600 hover:text-oriental-orange">→ Ibarra</a>
+                        <a href="rutas/tulcan" class="block text-sm text-gray-600 hover:text-oriental-orange">→ Tulcán</a>
+                        <a href="rutas/quito" class="block text-sm text-gray-600 hover:text-oriental-orange">→ Quito</a>
+                    </div>
+                </div>
+                <a href="sobre_nosotros" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Sobre Nosotros</a>
+                <a href="contacto" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Contacto</a>
+                <a href="ticket" class="block px-3 py-3 mt-4 text-center rounded-md text-base font-bold bg-oriental-orange text-white">
+                    <i class="fa-solid fa-ticket"></i> Comprar Boleto
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header (Banner) -->
+    <header class="page-header h-80 relative flex items-center justify-center text-center px-4 mt-20">
+        <div class="max-w-4xl mx-auto text-white z-10">
+            <h1 class="text-3xl md:text-5xl font-extrabold mb-4 drop-shadow-lg">
+                Nuestros Destinos
+            </h1>
+            <p class="text-lg md:text-xl font-light text-gray-100">
+                Conectando el norte del país con puntualidad y seguridad.
+            </p>
+        </div>
+    </header>
+
+    <!-- Contenido Principal: Lista de Rutas -->
+    <section class="py-16 bg-white flex-grow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <p class="text-oriental-teal font-bold uppercase tracking-wider mb-2">Viaja con nosotros</p>
+                <h2 class="text-3xl font-heading font-bold text-oriental-dark">Selecciona tu Ruta</h2>
+                <div class="w-24 h-1 bg-oriental-orange mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                
+                <!-- Tarjeta IBARRA -->
+                <article class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover-lift flex flex-col">
+                    <a href="rutas/ibarra" class="block h-56 overflow-hidden relative">
+                        <img src="https://coop-pimampiro.github.io/img/fotos/ibarra.png" alt="Terminal Terrestre Ibarra" class="w-full h-full object-cover transition duration-500 hover:scale-110">
+                        <div class="absolute top-4 right-4 bg-oriental-teal text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                            FRECUENTE
+                        </div>
+                    </a>
+                    <div class="p-8 flex flex-col flex-grow">
+                        <h3 class="text-2xl font-bold text-oriental-dark mb-2">Ibarra</h3>
+                        <p class="text-gray-500 text-sm mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-map-pin text-oriental-orange"></i> Terminal Terrestre de Ibarra
+                        </p>
+                        <p class="text-gray-600 mb-6 flex-grow">
+                            Conexión directa y rápida entre Pimampiro y la Ciudad Blanca. Ideal para viajes diarios de trabajo o estudios.
+                        </p>
+                        <div class="border-t border-gray-100 pt-6 mt-auto">
+                            <!-- BOTÓN CORREGIDO COLOR HOVER -->
+                            <a href="rutas/ibarra" class="block w-full text-center bg-gray-50 text-[#fb8c00] font-bold py-3 rounded-xl transition border border-gray-200 hover:bg-[#fb8c00] hover:text-white hover:border-[#fb8c00]">
+                                Ver Horarios y Precios
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Tarjeta TULCÁN -->
+                <article class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover-lift flex flex-col">
+                    <a href="rutas/tulcan" class="block h-56 overflow-hidden relative">
+                        <img src="https://coop-pimampiro.github.io/img/fotos/tulcan.png" alt="Terminal Terrestre Tulcán" class="w-full h-full object-cover transition duration-500 hover:scale-110">
+                        <div class="absolute top-4 right-4 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                            FRONTERA
+                        </div>
+                    </a>
+                    <div class="p-8 flex flex-col flex-grow">
+                        <h3 class="text-2xl font-bold text-oriental-dark mb-2">Tulcán</h3>
+                        <p class="text-gray-500 text-sm mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-map-pin text-oriental-orange"></i> Terminal Terrestre de Tulcán
+                        </p>
+                        <p class="text-gray-600 mb-6 flex-grow">
+                            Viaja seguro hacia la frontera norte. Servicio cómodo para trayectos largos y comerciales.
+                        </p>
+                        <div class="border-t border-gray-100 pt-6 mt-auto">
+                            <!-- BOTÓN CORREGIDO COLOR HOVER -->
+                            <a href="rutas/tulcan" class="block w-full text-center bg-gray-50 text-[#00897b] font-bold py-3 rounded-xl transition border border-gray-200 hover:bg-[#00897b] hover:text-white hover:border-[#00897b]">
+                                Ver Horarios y Precios
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Tarjeta QUITO -->
+                <article class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover-lift flex flex-col">
+                    <a href="rutas/quito" class="block h-56 overflow-hidden relative">
+                        <img src="https://coop-pimampiro.github.io/img/fotos/quito.png" alt="Terminal Terrestre Quitumbe" class="w-full h-full object-cover transition duration-500 hover:scale-110">
+                        <div class="absolute top-4 right-4 bg-oriental-orange text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                            CAPITAL
+                        </div>
+                    </a>
+                    <div class="p-8 flex flex-col flex-grow">
+                        <h3 class="text-2xl font-bold text-oriental-dark mb-2">Quito</h3>
+                        <p class="text-gray-500 text-sm mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-map-pin text-oriental-orange"></i> Terminal Quitumbe / Carcelén
+                        </p>
+                        <p class="text-gray-600 mb-6 flex-grow">
+                            Disfruta de un viaje placentero a la capital. Unidades equipadas para brindarte el máximo confort en tu viaje.
+                        </p>
+                        <div class="border-t border-gray-100 pt-6 mt-auto">
+                            <!-- BOTÓN CORREGIDO COLOR HOVER -->
+                            <a href="rutas/quito" class="block w-full text-center bg-gray-50 text-[#00897b] font-bold py-3 rounded-xl transition border border-gray-200 hover:bg-[#00897b] hover:text-white hover:border-[#00897b]">
+                                Ver Horarios y Precios
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-oriental-dark text-white pt-16 pb-8 border-t-4 border-oriental-gold">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <!-- Info Empresa -->
+                <div>
+                    <h3 class="text-xl font-heading font-bold mb-4 flex items-center gap-2 text-oriental-orange">
+                        <i class="fa-solid fa-bus"></i> ORIENTAL
+                    </h3>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                        Conectando destinos desde 1971. Seguridad, confort y la mejor atención en cada viaje.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/profile.php?id=61580118043717" target="_blank" class="bg-blue-600 hover:bg-blue-700 w-10 h-10 rounded-full flex items-center justify-center transition">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://wa.me/593980048508" target="_blank" class="bg-green-500 hover:bg-green-600 w-10 h-10 rounded-full flex items-center justify-center transition">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Enlaces Rápidos -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4 text-oriental-gold">Navegación</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="/" class="hover:text-oriental-orange transition">Inicio</a></li>
+                        <li><a href="rutas" class="text-oriental-orange font-bold transition">Rutas y Horarios</a></li>
+                        <li><a href="sobre_nosotros" class="hover:text-oriental-orange transition">Quiénes Somos</a></li>
+                        <li><a href="contacto" class="hover:text-oriental-orange transition">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contacto -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4 text-oriental-gold">Contáctanos</h4>
+                    <ul class="space-y-4 text-sm text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-phone mt-1 text-oriental-orange"></i>
+                            <span>+593 98 004 8508</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-envelope mt-1 text-oriental-orange"></i>
+                            <span>coop.oriental1971@gmail.com</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-location-arrow mt-1 text-oriental-orange"></i>
+                            <span>Pimampiro, Ecuador</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-teal-900 pt-8 text-center">
+                <p class="text-sm text-gray-400">&copy; 2025 Cooperativa de Transporte Oriental. <span class="text-gray-600">|</span> Pimampiro</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botón Flotante WhatsApp -->
+    <a href="https://wa.me/593980048508" class="whatsapp-float hover:shadow-orange-500/50" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

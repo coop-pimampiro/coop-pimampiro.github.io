@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprar Boleto | Cooperativa de Transporte Oriental</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="https://coop-pimampiro.github.io/img/coop_pimam_logo.ico" type="image/x-icon">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Iconos (FontAwesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, h4, h5, h6, .font-heading {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        /* COLORES CORPORATIVOS */
+        .text-oriental-teal { color: #00897b; }
+        .bg-oriental-teal { background-color: #00897b; }
+        .bg-oriental-dark { background-color: #004d40; }
+        .text-oriental-dark { color: #004d40; }
+        .text-oriental-orange { color: #fb8c00; }
+        .bg-oriental-orange { background-color: #fb8c00; }
+        .border-oriental-gold { border-color: #c5a017; }
+        .text-oriental-gold { color: #c5a017; }
+
+        /* Estilos del Bus */
+        .bus-container {
+            background-color: #e91e63;
+            border-radius: 40px;
+            padding: 20px;
+            max-width: 380px;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .bus-door {
+            position: absolute;
+            background-color: #000080;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            border-radius: 4px;
+        }
+        .door-driver { top: 60px; left: -10px; height: 60px; width: 20px; }
+        .door-passenger { top: 60px; right: -10px; height: 60px; width: 20px; }
+
+        .cabin-area {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            padding-top: 20px;
+        }
+        .staff-seat {
+            background-color: #fdd835;
+            width: 100px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .seats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .seat {
+            background-color: #e0e0e0;
+            height: 45px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            font-size: 14px;
+            border-bottom: 4px solid #bdbdbd;
+        }
+
+        .seat:hover:not(.occupied) {
+            transform: scale(1.05);
+            background-color: #b2dfdb;
+        }
+
+        .seat.selected {
+            background-color: #fb8c00;
+            color: white;
+            border-color: #e65100;
+        }
+        .seat.occupied {
+            background-color: #ef5350;
+            color: white;
+            cursor: not-allowed;
+            border-color: #c62828;
+            opacity: 0.7;
+        }
+
+        .aisle {
+            background-color: #ff5252;
+            grid-column: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            color: black;
+            font-size: 12px;
+            letter-spacing: 2px;
+            border-radius: 4px;
+        }
+
+        .last-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .dropdown-menu { display: none; position: absolute; background-color: white; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 100; border-top: 3px solid #fb8c00; border-radius: 0 0 8px 8px; }
+        .group:hover .dropdown-menu { display: block; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* DISEÑO DE ALERTA MODERNO (Estilo Imagen Referencia) */
+        #customAlert, #confirmModal {
+            animation: fadeInModal 0.2s ease-out;
+            backdrop-filter: blur(4px);
+            background-color: rgba(0, 0, 0, 0.6); /* Fondo más oscuro */
+        }
+        
+        .modern-modal {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            max-width: 400px;
+            width: 90%;
+            padding: 32px 24px;
+            text-align: center;
+            transform: scale(1);
+            animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .modal-icon-wrapper {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .modal-icon {
+            width: 80px;
+            height: 80px;
+            background-color: #fee2e2; /* Red-100 */
+            color: #ef4444; /* Red-500 */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            animation: pulseIcon 2s infinite;
+        }
+        
+        /* Icono para alertas informativas (no error) */
+        .modal-icon.info {
+            background-color: #e0f2f1; /* Teal-100 */
+            color: #00897b; /* Teal-600 */
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #1f2937; /* Gray-800 */
+            margin-bottom: 12px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .modal-message {
+            font-size: 1rem;
+            color: #6b7280; /* Gray-500 */
+            line-height: 1.5;
+            margin-bottom: 32px;
+        }
+
+        .modal-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .modal-actions.single {
+            grid-template-columns: 1fr;
+        }
+
+        .btn-modal {
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-secondary {
+            background-color: #f3f4f6; /* Gray-100 */
+            color: #374151; /* Gray-700 */
+        }
+        .btn-secondary:hover {
+            background-color: #e5e7eb;
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background-color: #ef4444; /* Red-500 */
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.3);
+        }
+        .btn-danger:hover {
+            background-color: #dc2626;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 8px -1px rgba(239, 68, 68, 0.4);
+        }
+        
+        .btn-primary {
+            background-color: #00897b; /* Teal */
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 137, 123, 0.3);
+        }
+        .btn-primary:hover {
+            background-color: #00796b;
+            transform: translateY(-1px);
+        }
+
+        @keyframes fadeInModal { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes scaleUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes pulseIcon {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+
+    <!-- 1. MODAL DE ALERTA (Solo Aceptar) -->
+    <div id="customAlert" class="fixed inset-0 z-[110] hidden flex items-center justify-center">
+        <div class="modern-modal">
+            <div class="modal-icon-wrapper">
+                <div class="modal-icon info">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                </div>
+            </div>
+            <h3 class="modal-title">¡Atención!</h3>
+            <p id="alertMessage" class="modal-message">Mensaje de alerta...</p>
+            <div class="modal-actions single">
+                <button onclick="closeCustomAlert()" class="btn-modal btn-primary">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. MODAL DE CONFIRMACIÓN (Limpiar Todo) -->
+    <div id="confirmModal" class="fixed inset-0 z-[110] hidden flex items-center justify-center">
+        <div class="modern-modal">
+            <div class="modal-icon-wrapper">
+                <div class="modal-icon">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+            </div>
+            <h3 class="modal-title">¿Estás seguro?</h3>
+            <p class="modal-message">Si confirmas, se borrará toda tu selección de ruta y asientos actual.</p>
+            <div class="modal-actions">
+                <button onclick="cerrarConfirmModal()" class="btn-modal btn-secondary">No, volver</button>
+                <button onclick="ejecutarLimpieza()" class="btn-modal btn-danger">Sí, limpiar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="/" class="flex items-center gap-3">
+                        <img src="https://coop-pimampiro.github.io/img/coop_pimam_logo.png" alt="Logo Oriental" class="h-14 w-auto drop-shadow-md">
+                        <div class="flex flex-col">
+                            <span class="font-heading font-extrabold text-2xl tracking-tight text-oriental-orange" style="text-shadow: 1px 1px 0px rgba(0,0,0,0.1);">ORIENTAL</span>
+                            <span class="text-xs font-bold text-oriental-teal tracking-widest uppercase">Pimampiro</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Menú Desktop -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Inicio</a>
+                    
+                    <div class="relative group h-full flex items-center">
+                        <a href="rutas" class="text-gray-600 font-semibold hover:text-oriental-teal transition flex items-center gap-1 cursor-pointer py-6">
+                            Rutas <i class="fa-solid fa-chevron-down text-xs opacity-70"></i>
+                        </a>
+                        <div class="dropdown-menu top-16 left-0">
+                            <a href="rutas/ibarra" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-oriental-orange transition border-b border-gray-100">Ibarra</a>
+                            <a href="rutas/tulcan" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-oriental-orange transition border-b border-gray-100">Tulcán</a>
+                            <a href="rutas/quito" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-oriental-orange transition">Quito</a>
+                        </div>
+                    </div>
+
+                    <a href="sobre_nosotros" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Sobre Nosotros</a>
+                    <a href="contacto" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Contacto</a>
+                    
+                    <!-- Botón Pago con Validación Navbar -->
+                    <a href="#" onclick="validarIrAPago(event)" class="bg-oriental-orange text-white px-6 py-2 rounded-full font-bold flex items-center gap-2 hover:bg-orange-600 shadow-md transform hover:-translate-y-1 transition">
+                        <i class="fa-solid fa-credit-card"></i> Pago
+                    </a>
+                </div>
+
+                <!-- Botón Menú Móvil -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-oriental-teal focus:outline-none">
+                        <i class="fa-solid fa-bars text-3xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-oriental-gold">
+            <div class="px-4 pt-2 pb-6 space-y-1">
+                <a href="/" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Inicio</a>
+                
+                <div class="block px-3 py-2 text-base font-medium text-gray-600">
+                    <span class="block mb-2 font-bold text-gray-800">Rutas</span>
+                    <div class="pl-4 space-y-2 border-l-2 border-oriental-orange">
+                        <a href="rutas" class="block text-sm text-gray-500 hover:text-oriental-teal">Ver todas</a>
+                        <a href="rutas/ibarra" class="block text-sm text-gray-600 hover:text-oriental-orange">→ Ibarra</a>
+                        <a href="rutas/tulcan" class="block text-sm text-gray-600 hover:text-oriental-orange">→ Tulcán</a>
+                        <a href="rutas/quito" class="block text-sm text-gray-600 hover:text-oriental-orange">→ Quito</a>
+                    </div>
+                </div>
+
+                <a href="sobre_nosotros" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Sobre Nosotros</a>
+                <a href="contacto" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Contacto</a>
+                
+                <a href="#" onclick="validarIrAPago(event)" class="block px-3 py-3 mt-4 text-center rounded-md text-base font-bold bg-oriental-orange text-white">
+                    <i class="fa-solid fa-credit-card"></i> Pago
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="bg-oriental-dark text-white pt-28 pb-10 px-4 text-center">
+        <h1 class="text-3xl md:text-4xl font-extrabold font-heading mb-2">Reserva tu Pasaje</h1>
+        <p class="text-gray-300">Selecciona tu destino, fecha y asiento favorito.</p>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            
+            <!-- ELEMENTO 1: Detalles del Viaje -->
+            <div class="lg:col-span-4 bg-white p-6 rounded-2xl shadow-lg border border-gray-100 h-fit">
+                <h2 class="text-xl font-bold text-oriental-dark mb-6 flex items-center gap-2">
+                    <span class="bg-oriental-orange text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">1</span>
+                    Detalles del Viaje
+                </h2>
+                
+                <form id="trip-form" class="space-y-4">
+                    <!-- Selección de Ruta -->
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Destino / Ruta <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <i class="fa-solid fa-route absolute left-3 top-3.5 text-oriental-teal"></i>
+                            <select id="ruta" class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-oriental-orange outline-none bg-gray-50" onchange="actualizarPrecio()">
+                                <option value="" disabled selected>Selecciona una ruta...</option>
+                                <option value="ibarra" data-price="1.40">Ruta: Pimampiro <-> Ibarra ($1.40)</option>
+                                <option value="tulcan" data-price="3.50">Ruta: Pimampiro <-> Tulcán ($3.50)</option>
+                                <option value="quito" data-price="4.35">Ruta: Pimampiro <-> Quito ($4.35)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Selección de Trayecto (Ida o Vuelta) -->
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Trayecto <span class="text-red-500">*</span></label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="cursor-pointer relative group">
+                                <input type="radio" name="sentido" value="ida" checked class="peer sr-only" onchange="actualizarPrecio()">
+                                <div class="rounded-xl border-2 border-gray-200 p-3 text-center transition-all duration-200 
+                                            hover:border-oriental-orange hover:shadow-md 
+                                            peer-checked:border-oriental-orange peer-checked:bg-orange-50 peer-checked:text-oriental-orange peer-checked:shadow-inner peer-checked:ring-2 peer-checked:ring-orange-200 peer-checked:ring-offset-1">
+                                    <div class="text-2xl mb-1"><i class="fa-solid fa-bus-simple transform -scale-x-100"></i></div>
+                                    <div class="text-sm font-bold">Salida</div>
+                                    <div class="text-xs font-normal opacity-70">Desde Pimampiro</div>
+                                </div>
+                                <!-- Indicador Check -->
+                                <div class="absolute top-2 right-2 text-oriental-orange opacity-0 peer-checked:opacity-100 transition-opacity">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                </div>
+                            </label>
+
+                            <label class="cursor-pointer relative group">
+                                <input type="radio" name="sentido" value="vuelta" class="peer sr-only" onchange="actualizarPrecio()">
+                                <div class="rounded-xl border-2 border-gray-200 p-3 text-center transition-all duration-200 
+                                            hover:border-oriental-teal hover:shadow-md 
+                                            peer-checked:border-oriental-teal peer-checked:bg-teal-50 peer-checked:text-oriental-teal peer-checked:shadow-inner peer-checked:ring-2 peer-checked:ring-teal-200 peer-checked:ring-offset-1">
+                                    <div class="text-2xl mb-1"><i class="fa-solid fa-bus-simple"></i></div>
+                                    <div class="text-sm font-bold">Retorno</div>
+                                    <div class="text-xs font-normal opacity-70">Hacia Pimampiro</div>
+                                </div>
+                                <!-- Indicador Check -->
+                                <div class="absolute top-2 right-2 text-oriental-teal opacity-0 peer-checked:opacity-100 transition-opacity">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Fecha -->
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Fecha de Viaje <span class="text-red-500">*</span></label>
+                        <input type="date" id="fecha" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-oriental-orange outline-none bg-gray-50">
+                        <p class="text-xs text-gray-500 mt-1">Solo fechas a partir de hoy.</p>
+                    </div>
+
+                    <!-- Hora -->
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Horario Disponible <span class="text-red-500">*</span></label>
+                        <select id="hora" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-oriental-orange outline-none bg-gray-50">
+                            <option value="">Selecciona ruta primero...</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+
+            <!-- ELEMENTO 2: Selección de Asientos (BUS) -->
+            <div class="lg:col-span-8 lg:row-span-2 bg-white p-6 rounded-2xl shadow-lg border border-gray-100 h-full">
+                <h2 class="text-xl font-bold text-oriental-dark mb-2 flex items-center gap-2">
+                    <span class="bg-oriental-orange text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">2</span>
+                    Selecciona tus Asientos <span class="text-red-500 ml-1 text-sm">*</span>
+                </h2>
+                
+                <!-- Leyenda -->
+                <div class="flex justify-center gap-4 mb-8 text-sm">
+                    <div class="flex items-center gap-1"><div class="w-4 h-4 bg-gray-300 rounded"></div> Libre</div>
+                    <div class="flex items-center gap-1"><div class="w-4 h-4 bg-oriental-orange rounded"></div> Seleccionado</div>
+                    <div class="flex items-center gap-1"><div class="w-4 h-4 bg-red-500 rounded opacity-70"></div> Ocupado</div>
+                </div>
+
+                <!-- Layout del Bus -->
+                <div class="overflow-x-auto pb-8">
+                    <div class="bus-container">
+                        <!-- Puertas decorativas -->
+                        <div class="bus-door door-driver">Puerta del Chofer</div>
+                        <div class="bus-door door-passenger">Puerta</div>
+
+                        <!-- Cabina -->
+                        <div class="cabin-area">
+                            <div class="staff-seat">Chofer</div>
+                            <div class="staff-seat">Ayudante</div>
+                        </div>
+
+                        <!-- Asientos Grid -->
+                        <div class="seats-grid" id="bus-seats">
+                            <!-- Fila 1 -->
+                            <div class="seat" data-id="01">01</div> <div class="seat" data-id="02">02</div> 
+                            <div class="aisle" style="grid-row: span 9;">Pasillo</div> 
+                            <div class="seat" data-id="03">03</div> <div class="seat" data-id="04">04</div>
+                            
+                            <!-- Fila 2 -->
+                            <div class="seat" data-id="05">05</div> <div class="seat" data-id="06">06</div> 
+                            <div class="seat" data-id="07">07</div> <div class="seat" data-id="08">08</div>
+
+                            <!-- Fila 3 -->
+                            <div class="seat" data-id="09">09</div> <div class="seat" data-id="10">10</div> 
+                            <div class="seat" data-id="11">11</div> <div class="seat" data-id="12">12</div>
+
+                            <!-- Fila 4 -->
+                            <div class="seat" data-id="13">13</div> <div class="seat" data-id="14">14</div> 
+                            <div class="seat" data-id="15">15</div> <div class="seat" data-id="16">16</div>
+
+                            <!-- Fila 5 -->
+                            <div class="seat" data-id="17">17</div> <div class="seat" data-id="18">18</div> 
+                            <div class="seat" data-id="19">19</div> <div class="seat" data-id="20">20</div>
+
+                            <!-- Fila 6 -->
+                            <div class="seat" data-id="21">21</div> <div class="seat" data-id="22">22</div> 
+                            <div class="seat" data-id="23">23</div> <div class="seat" data-id="24">24</div>
+
+                            <!-- Fila 7 -->
+                            <div class="seat" data-id="25">25</div> <div class="seat" data-id="26">26</div> 
+                            <div class="seat" data-id="27">27</div> <div class="seat" data-id="28">28</div>
+
+                            <!-- Fila 8 -->
+                            <div class="seat" data-id="29">29</div> <div class="seat" data-id="30">30</div> 
+                            <div class="seat" data-id="31">31</div> <div class="seat" data-id="32">32</div>
+
+                            <!-- Fila 9 -->
+                            <div class="seat" data-id="33">33</div> <div class="seat" data-id="34">34</div> 
+                            <div class="seat" data-id="35">35</div> <div class="seat" data-id="36">36</div>
+                        </div>
+                        
+                        <!-- Última Fila (5 asientos) -->
+                        <div class="last-row">
+                            <div class="seat" data-id="37">37</div>
+                            <div class="seat" data-id="38">38</div>
+                            <div class="seat" data-id="39">39</div>
+                            <div class="seat" data-id="40">40</div>
+                            <div class="seat" data-id="41">41</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ELEMENTO 3: Resumen de Compra -->
+            <div class="lg:col-span-4 bg-white p-6 rounded-2xl shadow-lg border-t-4 border-oriental-teal h-fit sticky top-24">
+                <h2 class="text-xl font-bold text-oriental-dark mb-4">Resumen</h2>
+                <ul class="space-y-3 text-sm text-gray-600 mb-6">
+                    <li class="flex justify-between">
+                        <span>Ruta:</span>
+                        <strong id="summary-dest" class="text-gray-800 text-right">-</strong>
+                    </li>
+                     <li class="flex justify-between">
+                        <span>Sentido:</span>
+                        <strong id="summary-sentido" class="text-oriental-teal text-right">-</strong>
+                    </li>
+                    <li class="flex justify-between">
+                        <span>Fecha/Hora:</span>
+                        <strong id="summary-date" class="text-gray-800 text-right">-</strong>
+                    </li>
+                    <li class="flex justify-between">
+                        <span>Asientos:</span>
+                        <strong id="summary-seats" class="text-oriental-orange font-bold text-right">-</strong>
+                    </li>
+                    <li class="flex justify-between text-lg pt-3 border-t">
+                        <span class="font-bold text-gray-800">Total a Pagar:</span>
+                        <span id="summary-total" class="font-bold text-oriental-dark">$0.00</span>
+                    </li>
+                </ul>
+                
+                <div class="space-y-3">
+                    <a href="checkout" id="btn-pay" class="block w-full bg-gray-300 text-white text-center font-bold py-4 rounded-xl cursor-not-allowed pointer-events-none transition shadow-sm">
+                        Ir a Pago <i class="fa-solid fa-chevron-right ml-1"></i>
+                    </a>
+                    
+                    <!-- BOTÓN LIMPIAR -->
+                    <button onclick="pedirConfirmacionLimpiar()" class="block w-full bg-white text-gray-500 font-bold py-3 rounded-xl border border-gray-200 hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition shadow-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-trash-can"></i> Limpiar Todo
+                    </button>
+                </div>
+
+                <p class="text-xs text-center text-gray-400 mt-4">Selecciona ruta, hora y asientos para continuar</p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-oriental-dark text-white pt-10 pb-5 border-t-4 border-oriental-gold mt-auto">
+        <div class="text-center">
+            <p class="text-sm text-gray-400">&copy; 2025 Cooperativa de Transporte Oriental.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts de Lógica -->
+    <script>
+        // 1. CONFIGURACIÓN DE FECHAS
+        const fechaInput = document.getElementById('fecha');
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        const minDate = `${yyyy}-${mm}-${dd}`;
+        const maxDate = `${2025}-12-31`; // Limite 2025
+        
+        fechaInput.min = minDate;
+        fechaInput.max = maxDate;
+        fechaInput.value = minDate; 
+
+        // 2. FUNCIONES DE ALERTAS Y MODALES (Diseño Mejorado)
+        function showAlert(message) {
+            const alertBox = document.getElementById('customAlert');
+            const alertMsg = document.getElementById('alertMessage');
+            alertMsg.innerText = message;
+            alertBox.classList.remove('hidden');
+        }
+
+        function closeCustomAlert() {
+            document.getElementById('customAlert').classList.add('hidden');
+        }
+
+        // Lógica para Modal de Confirmación (Limpiar)
+        function pedirConfirmacionLimpiar() {
+            document.getElementById('confirmModal').classList.remove('hidden');
+        }
+
+        function cerrarConfirmModal() {
+            document.getElementById('confirmModal').classList.add('hidden');
+        }
+
+        // FUNCIÓN AUXILIAR PARA NAVEGACIÓN SEGURA (FIX)
+        function navegarA(url) {
+            const link = document.createElement('a');
+            link.href = url;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // 3. VALIDACIÓN MEJORADA DESDE NAVBAR
+        function validarIrAPago(e) {
+            e.preventDefault();
+            const storedData = localStorage.getItem('tripData');
+            
+            if (storedData) {
+                const data = JSON.parse(storedData);
+                // Validar que TODO esté lleno para permitir el paso
+                const tieneRuta = data.rutaValue && data.rutaValue !== "";
+                const tieneFecha = data.fecha && data.fecha !== "";
+                const tieneHora = data.hora && data.hora !== "";
+                const tieneAsientos = data.asientos && data.asientos.length > 0;
+
+                if (tieneRuta && tieneFecha && tieneHora && tieneAsientos) {
+                    navegarA('checkout.html');
+                } else {
+                    showAlert('Tu viaje está incompleto. Por favor selecciona Ruta, Fecha, Hora y al menos un Asiento.');
+                }
+            } else {
+                showAlert('No tienes ningún boleto seleccionado. Por favor, configura tu viaje primero.');
+            }
+        }
+
+        // 4. GENERADOR DE HORARIOS
+        function generarIntervalos(horaInicio, horaFin) {
+            const intervalos = [];
+            let [h, m] = horaInicio.split(':').map(Number);
+            const [endH, endM] = horaFin.split(':').map(Number);
+            
+            while (h < endH || (h === endH && m <= endM)) {
+                const horaFmt = String(h).padStart(2, '0');
+                const minFmt = String(m).padStart(2, '0');
+                intervalos.push(`${horaFmt}:${minFmt}`);
+                
+                m += 15;
+                if (m >= 60) {
+                    m = 0;
+                    h++;
+                }
+            }
+            return intervalos;
+        }
+
+        const dataRutas = {
+            'ibarra': {
+                ida: generarIntervalos('04:15', '18:15'),
+                vuelta: generarIntervalos('05:30', '20:00')
+            },
+            'tulcan': {
+                ida: ['06:30'],
+                vuelta: ['14:00']
+            },
+            'quito': {
+                ida: ['04:00', '13:00'],
+                vuelta: ['10:30', '17:30']
+            }
+        };
+
+        // 5. LÓGICA DE RUTAS Y PRECIOS
+        const rutaSelect = document.getElementById('ruta');
+        const horaSelect = document.getElementById('hora');
+        const sentidosRadio = document.getElementsByName('sentido');
+        let precioActual = 0;
+
+        function getSentido() {
+            for (const radio of sentidosRadio) {
+                if (radio.checked) return radio.value;
+            }
+            return 'ida';
+        }
+
+        function actualizarPrecio() {
+            const selectedOption = rutaSelect.options[rutaSelect.selectedIndex];
+            const ruta = selectedOption.value;
+            const sentido = getSentido(); 
+            
+            if (ruta) {
+                // Actualizar precio
+                precioActual = parseFloat(selectedOption.getAttribute('data-price'));
+                
+                // Actualizar Textos Resumen
+                const nombreRuta = selectedOption.text.split('(')[0].replace('Ruta: ', '').trim();
+                let rutaTexto = "";
+                let sentidoTexto = "";
+
+                if (sentido === 'ida') {
+                    rutaTexto = nombreRuta.replace('<->', '→'); 
+                    sentidoTexto = "Salida (Desde Pimampiro)";
+                } else {
+                    const partes = nombreRuta.split('<->');
+                    if(partes.length === 2) {
+                        rutaTexto = `${partes[1].trim()} → ${partes[0].trim()}`;
+                    } else {
+                        rutaTexto = nombreRuta;
+                    }
+                    sentidoTexto = "Retorno (Hacia Pimampiro)";
+                }
+
+                document.getElementById('summary-dest').innerText = rutaTexto;
+                document.getElementById('summary-sentido').innerText = sentidoTexto;
+                
+                // CARGAR HORARIOS CORRECTOS
+                const currentHourSelection = horaSelect.value;
+                
+                // Resetear select manteniendo el placeholder
+                horaSelect.innerHTML = '<option value="">Elige hora...</option>';
+                const listaHoras = dataRutas[ruta][sentido] || [];
+                
+                listaHoras.forEach(h => {
+                    const option = document.createElement('option');
+                    option.value = h;
+                    option.text = h;
+                    horaSelect.appendChild(option);
+                });
+
+                // Restaurar selección si aún es válida
+                if (currentHourSelection && listaHoras.includes(currentHourSelection)) {
+                    horaSelect.value = currentHourSelection;
+                }
+            } else {
+                document.getElementById('summary-dest').innerText = "-";
+                document.getElementById('summary-sentido').innerText = "-";
+            }
+            actualizarResumen();
+            guardarEstadoAutomatico(); // AUTO GUARDADO
+        }
+
+        // 6. SELECCIÓN DE ASIENTOS
+        const seats = document.querySelectorAll('.seat');
+        const selectedSeatsSpan = document.getElementById('summary-seats');
+        const totalSpan = document.getElementById('summary-total');
+        const btnPay = document.getElementById('btn-pay');
+        let selectedSeats = [];
+
+        seats.forEach(seat => {
+            seat.addEventListener('click', () => {
+                if (seat.classList.contains('occupied')) return;
+                
+                if (!rutaSelect.value) {
+                    showAlert('Por favor, selecciona primero tu ruta y trayecto.');
+                    return;
+                }
+
+                seat.classList.toggle('selected');
+                const id = seat.dataset.id;
+
+                if (selectedSeats.includes(id)) {
+                    selectedSeats = selectedSeats.filter(s => s !== id);
+                } else {
+                    selectedSeats.push(id);
+                }
+                
+                actualizarResumen();
+                guardarEstadoAutomatico(); // AUTO GUARDADO
+            });
+        });
+
+        // 7. ACTUALIZAR RESUMEN CON VALIDACIÓN ESTRICTA
+        function actualizarResumen() {
+            const fechaVal = fechaInput.value;
+            const horaVal = horaSelect.value;
+            const rutaVal = rutaSelect.value;
+            
+            // Texto visual
+            document.getElementById('summary-date').innerText = `${fechaVal} ${horaVal || '--:--'}`;
+            
+            // Validación estricta: Deben estar TODOS los campos llenos
+            const isRutaSelected = rutaVal !== "" && rutaVal !== null;
+            const isHoraSelected = horaVal !== "" && horaVal !== null;
+            const isFechaSelected = fechaVal !== "";
+            const areSeatsSelected = selectedSeats.length > 0;
+            
+            const isValid = isRutaSelected && isHoraSelected && isFechaSelected && areSeatsSelected;
+
+            if (selectedSeats.length > 0) {
+                selectedSeatsSpan.innerText = selectedSeats.join(', ');
+                const total = (selectedSeats.length * precioActual).toFixed(2);
+                totalSpan.innerText = `$${total}`;
+            } else {
+                selectedSeatsSpan.innerText = '-';
+                totalSpan.innerText = '$0.00';
+            }
+
+            // Habilitar/Deshabilitar botón basado en validación completa
+            if (isValid) {
+                btnPay.classList.remove('bg-gray-300', 'cursor-not-allowed', 'pointer-events-none');
+                btnPay.classList.add('bg-oriental-orange', 'hover:bg-orange-600', 'shadow-md');
+                btnPay.disabled = false;
+            } else {
+                btnPay.classList.add('bg-gray-300', 'cursor-not-allowed', 'pointer-events-none');
+                btnPay.classList.remove('bg-oriental-orange', 'hover:bg-orange-600', 'shadow-md');
+                btnPay.disabled = true;
+            }
+        }
+
+        // 8. FUNCION DE AUTO GUARDADO
+        function guardarEstadoAutomatico() {
+            if(rutaSelect.value) {
+                const tripData = {
+                    rutaValue: rutaSelect.value,
+                    sentidoValue: getSentido(),
+                    rutaTexto: document.getElementById('summary-dest').innerText,
+                    sentidoTexto: document.getElementById('summary-sentido').innerText,
+                    fecha: fechaInput.value,
+                    hora: horaSelect.value,
+                    asientos: selectedSeats,
+                    precioUnitario: precioActual
+                };
+                localStorage.setItem('tripData', JSON.stringify(tripData));
+            }
+        }
+
+        // 9. RESTAURAR ESTADO AL CARGAR
+        window.addEventListener('load', () => {
+            const storedData = localStorage.getItem('tripData');
+            if (storedData) {
+                const data = JSON.parse(storedData);
+                
+                // 1. Restaurar Ruta
+                if (data.rutaValue) {
+                    rutaSelect.value = data.rutaValue;
+                }
+
+                // 2. Restaurar Sentido
+                if (data.sentidoValue) {
+                    const radios = document.getElementsByName('sentido');
+                    for (const r of radios) {
+                        if (r.value === data.sentidoValue) r.checked = true;
+                    }
+                }
+
+                // 3. Forzar actualización de precios y horarios
+                actualizarPrecio(); 
+
+                // 4. Restaurar Fecha
+                if (data.fecha) {
+                    fechaInput.value = data.fecha;
+                }
+
+                // 5. Restaurar Hora
+                if (data.hora) {
+                    horaSelect.value = data.hora;
+                }
+
+                // 6. Restaurar Asientos
+                if (data.asientos && Array.isArray(data.asientos)) {
+                    selectedSeats = data.asientos;
+                    selectedSeats.forEach(id => {
+                        const seatEl = document.querySelector(`.seat[data-id="${id}"]`);
+                        if (seatEl) seatEl.classList.add('selected');
+                    });
+                    selectedSeats = data.asientos; // Sincronizar array lógico
+                }
+
+                // 7. Actualizar Resumen final
+                actualizarResumen();
+            }
+        });
+
+        // 10. FUNCIÓN DE LIMPIEZA TOTAL (Ejecutada desde el modal)
+        function ejecutarLimpieza() {
+            localStorage.removeItem('tripData');
+            
+            selectedSeats = [];
+            precioActual = 0;
+            rutaSelect.selectedIndex = 0;
+            
+            const radios = document.getElementsByName('sentido');
+            for (const r of radios) {
+                if (r.value === 'ida') r.checked = true;
+                else r.checked = false;
+            }
+            
+            fechaInput.value = minDate;
+            horaSelect.innerHTML = '<option value="">Selecciona ruta primero...</option>';
+            
+            seats.forEach(s => s.classList.remove('selected'));
+            
+            document.getElementById('summary-dest').innerText = "-";
+            document.getElementById('summary-sentido').innerText = "-";
+            
+            actualizarResumen();
+            
+            // Cerrar modal
+            cerrarConfirmModal();
+            // Mostrar confirmación
+            setTimeout(() => showAlert("Selección borrada correctamente."), 300);
+        }
+
+        // Listeners
+        horaSelect.addEventListener('change', () => {
+            actualizarResumen();
+            guardarEstadoAutomatico();
+        });
+        fechaInput.addEventListener('change', () => {
+            actualizarResumen();
+            guardarEstadoAutomatico();
+        });
+
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

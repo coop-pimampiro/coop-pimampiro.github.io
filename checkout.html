@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago y Confirmación | Cooperativa de Transporte Oriental</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="https://coop-pimampiro.github.io/img/coop_pimam_logo.ico" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Open Sans', sans-serif; scroll-behavior: smooth; }
+        h1, h2, h3, h4, .font-heading { font-family: 'Montserrat', sans-serif; }
+        
+        /* COLORES CORPORATIVOS */
+        .text-oriental-teal { color: #00897b; }
+        .bg-oriental-teal { background-color: #00897b; }
+        .bg-oriental-dark { background-color: #004d40; }
+        .text-oriental-orange { color: #fb8c00; }
+        .bg-oriental-orange { background-color: #fb8c00; }
+        .border-oriental-gold { border-color: #c5a017; }
+        
+        /* Dropdown Menu */
+        .dropdown-menu { display: none; position: absolute; background-color: white; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 100; border-top: 3px solid #fb8c00; border-radius: 0 0 8px 8px; }
+        .group:hover .dropdown-menu { display: block; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Modal personalizado */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            animation: scaleUp 0.3s ease;
+        }
+        @keyframes scaleUp { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        /* Estilo para validaciones */
+        #customAlert { animation: fadeInModal 0.2s ease-out; }
+        @keyframes fadeInModal { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Estilos checkbox asientos */
+        .checkbox-seat:checked + div {
+            background-color: #fb8c00;
+            color: white;
+            border-color: #fb8c00;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+
+    <!-- MODAL DE ALERTA PERSONALIZADO -->
+    <div id="customAlert" class="fixed inset-0 bg-black bg-opacity-50 z-[1100] hidden flex items-center justify-center backdrop-blur-sm px-4">
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl transform scale-100 transition-all border-t-4 border-oriental-orange">
+            <div class="text-center">
+                <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-orange-100 mb-4 animate-bounce">
+                    <i class="fa-solid fa-triangle-exclamation text-oriental-orange text-3xl"></i>
+                </div>
+                <h3 class="text-xl leading-6 font-bold text-gray-900 mb-2 font-heading">¡Ups! Faltan datos</h3>
+                <p id="alertMessage" class="text-gray-600 mb-6 text-sm">Mensaje de alerta...</p>
+                <button onclick="closeCustomAlert()" class="w-full inline-flex justify-center rounded-xl border border-transparent shadow-lg px-4 py-3 bg-oriental-dark text-base font-bold text-white hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition transform hover:-translate-y-1">
+                    Entendido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar Completo -->
+    <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="/" class="flex items-center gap-3">
+                        <img src="https://coop-pimampiro.github.io/img/coop_pimam_logo.png" alt="Logo Oriental" class="h-14 w-auto drop-shadow-md">
+                        <div class="flex flex-col">
+                            <span class="font-heading font-extrabold text-2xl tracking-tight text-oriental-orange" style="text-shadow: 1px 1px 0px rgba(0,0,0,0.1);">ORIENTAL</span>
+                            <span class="text-xs font-bold text-oriental-teal tracking-widest uppercase">Pimampiro</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Menú Desktop -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Inicio</a>
+                    
+                    <div class="relative group h-full flex items-center">
+                        <a href="rutas" class="text-gray-600 font-semibold hover:text-oriental-teal transition flex items-center gap-1 cursor-pointer py-6">
+                            Rutas <i class="fa-solid fa-chevron-down text-xs opacity-70"></i>
+                        </a>
+                        <div class="dropdown-menu top-16 left-0">
+                            <a href="rutas/ibarra" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-oriental-orange transition border-b border-gray-100">Ibarra</a>
+                            <a href="rutas/tulcan" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-oriental-orange transition border-b border-gray-100">Tulcán</a>
+                            <a href="rutas/quito" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-oriental-orange transition">Quito</a>
+                        </div>
+                    </div>
+
+                    <a href="sobre_nosotros" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Sobre Nosotros</a>
+                    <a href="contacto" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Contacto</a>
+                    
+                    <a href="ticket" class="bg-oriental-orange text-white px-6 py-2 rounded-full font-bold flex items-center gap-2 hover:bg-orange-600 shadow-md transform -translate-y-1">
+                        <i class="fa-solid fa-ticket"></i> Comprar Boleto
+                    </a>
+                </div>
+
+                <!-- Botón Menú Móvil -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-oriental-teal focus:outline-none">
+                        <i class="fa-solid fa-bars text-3xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-oriental-gold">
+            <div class="px-4 pt-2 pb-6 space-y-1">
+                <a href="/" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Inicio</a>
+                
+                <div class="block px-3 py-2 text-base font-medium text-gray-600">
+                    <span class="block mb-2 font-bold text-gray-800">Rutas</span>
+                    <div class="pl-4 space-y-2 border-l-2 border-oriental-orange">
+                        <a href="rutas" class="block text-sm text-gray-500 hover:text-oriental-teal">Ver todas</a>
+                        <a href="rutas/ibarra" class="block text-sm text-gray-600 hover:text-oriental-orange">→ Ibarra</a>
+                        <a href="rutas/tulcan" class="block text-sm text-gray-600 hover:text-oriental-orange">→ Tulcán</a>
+                        <a href="rutas/quito" class="block text-sm text-gray-600 hover:text-oriental-orange">→ Quito</a>
+                    </div>
+                </div>
+
+                <a href="sobre_nosotros" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Sobre Nosotros</a>
+                <a href="contacto" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Contacto</a>
+                
+                <a href="ticket" class="block px-3 py-3 mt-4 text-center rounded-md text-base font-bold bg-oriental-orange text-white">
+                    <i class="fa-solid fa-ticket"></i> Comprar Boleto
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ESTADO: Sin Datos (Oculto por defecto) -->
+    <div id="no-data-view" class="hidden flex-grow flex-col items-center justify-center pt-32 pb-10 px-4 text-center">
+        <div class="bg-gray-100 p-8 rounded-2xl max-w-md w-full border border-gray-200 shadow-sm">
+            <div class="text-oriental-orange text-5xl mb-4"><i class="fa-solid fa-ticket-simple"></i></div>
+            <h2 class="text-2xl font-bold text-oriental-dark mb-2">No hay boletos seleccionados</h2>
+            <p class="text-gray-600 mb-6">Parece que no has seleccionado ningún viaje o la sesión ha expirado.</p>
+            <a href="ticket" class="inline-block bg-oriental-teal text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:bg-teal-700 transition">
+                Ir a comprar boletos
+            </a>
+        </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL (Se muestra si hay datos) -->
+    <div id="main-content">
+        <!-- Header -->
+        <header class="bg-oriental-dark text-white pt-28 pb-10 px-4 text-center">
+            <h1 class="text-3xl md:text-4xl font-extrabold font-heading mb-2">Confirmación y Pago</h1>
+            <p class="text-gray-300">Revisa tu itinerario y completa tus datos.</p>
+        </header>
+
+        <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                
+                <!-- Columna Izquierda: Datos del Pasajero -->
+                <div class="space-y-8">
+                    <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+                        <h2 class="text-xl font-bold text-oriental-dark mb-6 border-b pb-2">Datos del Cliente</h2>
+                        <form id="passenger-form" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Nombres y Apellidos *</label>
+                                <input type="text" id="nombre" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-oriental-orange outline-none bg-gray-50 focus:ring-1 focus:ring-oriental-orange" oninput="guardarDatosPasajero()">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-1">Cédula *</label>
+                                    <input type="number" id="cedula" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-oriental-orange outline-none bg-gray-50 focus:ring-1 focus:ring-oriental-orange" oninput="guardarDatosPasajero()">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-1">Celular *</label>
+                                    <input type="tel" id="celular" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-oriental-orange outline-none bg-gray-50 focus:ring-1 focus:ring-oriental-orange" oninput="guardarDatosPasajero()">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Correo Electrónico (Opcional)</label>
+                                <input type="email" id="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-oriental-orange outline-none bg-gray-50 focus:ring-1 focus:ring-oriental-orange" oninput="guardarDatosPasajero()">
+                            </div>
+
+                            <!-- MEJORA: Opción Preferencial Desplegable -->
+                            <div class="bg-orange-50 p-4 rounded-lg border border-orange-100 mt-6">
+                                <label class="flex items-center justify-between cursor-pointer mb-2">
+                                    <div>
+                                        <span class="font-bold text-gray-800">¿Alguien tiene Tarifa Preferencial?</span>
+                                        <p class="text-xs text-gray-600">Discapacidad, Tercera Edad, Niños.</p>
+                                    </div>
+                                    <div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+                                        <input type="checkbox" id="preferencial-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer border-gray-300 left-0 transition-all duration-300" onchange="toggleDiscountSection(); guardarDatosPasajero()"/>
+                                        <label for="preferencial-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-300"></label>
+                                    </div>
+                                </label>
+                                
+                                <!-- Contenedor de selección de asientos (Oculto por defecto) -->
+                                <div id="discount-seats-container" class="hidden mt-4 pt-4 border-t border-orange-200 animate-fade-in-down">
+                                    <p class="text-sm font-bold text-oriental-orange mb-3">Selecciona los asientos con descuento (50%):</p>
+                                    <div id="seats-checkbox-list" class="grid grid-cols-3 gap-3">
+                                        <!-- Checkboxes generados dinámicamente -->
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-3 italic"><i class="fa-solid fa-circle-info"></i> Se verificará la condición al abordar.</p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 text-center">
+                        <p class="text-gray-600 mb-4">¿Deseas agregar más pasajes o cambiar la ruta?</p>
+                        <a href="ticket" class="inline-block bg-gray-100 text-gray-700 font-bold py-2 px-6 rounded-lg hover:bg-gray-200 transition">
+                            <i class="fa-solid fa-plus mr-2"></i> Comprar más boletos
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Resumen Final -->
+                <div class="h-fit sticky top-24">
+                    <div class="bg-white p-8 rounded-2xl shadow-xl border-t-4 border-oriental-teal">
+                        <h2 class="text-2xl font-bold text-oriental-dark mb-6">Resumen de Compra</h2>
+                        
+                        <div id="trip-details" class="space-y-4 mb-6 text-sm">
+                            <div class="flex justify-between border-b border-gray-100 pb-2">
+                                <span class="text-gray-500">Ruta:</span>
+                                <span id="res-ruta" class="font-bold text-right text-gray-800">Cargando...</span>
+                            </div>
+                            <div class="flex justify-between border-b border-gray-100 pb-2">
+                                <span class="text-gray-500">Sentido:</span>
+                                <span id="res-sentido" class="font-bold text-right text-oriental-teal">Cargando...</span>
+                            </div>
+                            <div class="flex justify-between border-b border-gray-100 pb-2">
+                                <span class="text-gray-500">Fecha y Hora:</span>
+                                <span id="res-fecha" class="font-bold text-right text-gray-800">Cargando...</span>
+                            </div>
+                            <div class="flex justify-between border-b border-gray-100 pb-2">
+                                <span class="text-gray-500">Asientos:</span>
+                                <span id="res-asientos" class="font-bold text-right text-oriental-orange text-lg">Cargando...</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                            <div class="flex justify-between mb-2 text-gray-600">
+                                <span>Subtotal (Sin Descuento):</span>
+                                <span id="res-subtotal">$0.00</span>
+                            </div>
+                            <div class="flex justify-between mb-2 text-green-600 font-bold" id="row-descuento" style="display: none;">
+                                <span>Ahorro Preferencial:</span>
+                                <span id="res-descuento">-$0.00</span>
+                            </div>
+                            <div class="flex justify-between text-2xl font-extrabold text-oriental-dark pt-2 border-t border-gray-200">
+                                <span>Total a Pagar:</span>
+                                <span id="res-total">$0.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Botones de Acción -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <button onclick="mostrarModalCancelar()" class="bg-red-100 text-red-600 hover:bg-red-200 font-bold py-3 rounded-xl transition">
+                                <i class="fa-solid fa-trash mr-2"></i> Cancelar
+                            </button>
+                            <button onclick="enviarWhatsApp()" class="bg-green-500 text-white hover:bg-green-600 font-bold py-3 rounded-xl shadow-lg transition transform hover:-translate-y-1">
+                                <i class="fa-brands fa-whatsapp mr-2"></i> Enviar a WhatsApp
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Cancelación -->
+    <div id="cancelModal" class="modal">
+        <div class="modal-content">
+            <div class="text-red-500 text-5xl mb-4"><i class="fa-solid fa-circle-exclamation"></i></div>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">¿Estás seguro?</h3>
+            <p class="text-gray-600 mb-6">Si cancelas ahora, se borrará toda la información de tu reserva y volverás al inicio.</p>
+            <div class="flex justify-center gap-4">
+                <button onclick="cerrarModalCancelar()" class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg font-bold hover:bg-gray-300">No, volver</button>
+                <button onclick="confirmarCancelacion()" class="bg-red-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-red-600">Sí, cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-oriental-dark text-white pt-10 pb-5 border-t-4 border-oriental-gold mt-auto text-center">
+        <p class="text-sm text-gray-400">&copy; 2025 Cooperativa de Transporte Oriental.</p>
+    </footer>
+
+    <!-- Estilos Toggle Switch personalizados para Tailwind -->
+    <style>
+        .toggle-checkbox:checked { right: 0; border-color: #fb8c00; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #fb8c00; }
+        .toggle-checkbox { right: auto; left: 0; }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-down { animation: fadeInDown 0.3s ease-out; }
+    </style>
+
+    <script>
+        // 1. CARGAR DATOS
+        let tripData = {};
+        let discountedSeats = []; // Almacena qué asientos tienen descuento
+        
+        window.onload = function() {
+            const data = localStorage.getItem('tripData');
+            const mainContent = document.getElementById('main-content');
+            const noDataView = document.getElementById('no-data-view');
+
+            if (!data) {
+                mainContent.style.display = 'none';
+                noDataView.classList.remove('hidden');
+                noDataView.classList.add('flex');
+                return;
+            }
+            
+            noDataView.classList.add('hidden');
+            tripData = JSON.parse(data);
+            
+            // Renderizar la lista de selección de asientos preferenciales
+            renderDiscountSeats();
+            mostrarDatos();
+            
+            // RESTAURAR DATOS DEL PASAJERO (NUEVO)
+            restaurarDatosPasajero();
+            
+            calcularTotal();
+        };
+
+        function mostrarDatos() {
+            document.getElementById('res-ruta').innerText = tripData.rutaTexto;
+            document.getElementById('res-sentido').innerText = tripData.sentidoTexto;
+            document.getElementById('res-fecha').innerText = `${tripData.fecha} a las ${tripData.hora}`;
+            document.getElementById('res-asientos').innerText = tripData.asientos.join(', ');
+        }
+
+        // 2. RENDERIZAR CHECKBOXES DINÁMICOS
+        function renderDiscountSeats() {
+            const container = document.getElementById('seats-checkbox-list');
+            container.innerHTML = ''; // Limpiar
+
+            tripData.asientos.forEach(seatId => {
+                const label = document.createElement('label');
+                label.className = "cursor-pointer relative";
+                
+                const input = document.createElement('input');
+                input.type = "checkbox";
+                input.value = seatId;
+                input.className = "checkbox-seat peer sr-only"; // Oculto
+                input.onchange = () => { calcularTotal(); guardarDatosPasajero(); };
+
+                const displayDiv = document.createElement('div');
+                displayDiv.className = "border-2 border-gray-300 rounded-lg p-2 text-center text-sm font-bold text-gray-600 hover:bg-gray-100 transition peer-checked:bg-oriental-orange peer-checked:text-white peer-checked:border-oriental-orange";
+                displayDiv.innerText = `Asiento ${seatId}`;
+
+                label.appendChild(input);
+                label.appendChild(displayDiv);
+                container.appendChild(label);
+            });
+        }
+
+        function toggleDiscountSection() {
+            const toggle = document.getElementById('preferencial-toggle');
+            const container = document.getElementById('discount-seats-container');
+            
+            if (toggle.checked) {
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
+                // Desmarcar todos si se apaga el toggle
+                const checkboxes = document.querySelectorAll('.checkbox-seat');
+                checkboxes.forEach(cb => cb.checked = false);
+                calcularTotal();
+            }
+        }
+
+        // 3. LÓGICA DE PRECIO Y DESCUENTO
+        function calcularTotal() {
+            const precioUnitario = parseFloat(tripData.precioUnitario);
+            const checkboxes = document.querySelectorAll('.checkbox-seat');
+            
+            let normalCount = 0;
+            let discountCount = 0;
+            discountedSeats = []; // Reiniciar lista
+
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    discountCount++;
+                    discountedSeats.push(cb.value);
+                } else {
+                    normalCount++;
+                }
+            });
+
+            // Si el toggle principal está apagado, todos son normales
+            const mainToggle = document.getElementById('preferencial-toggle');
+            if (!mainToggle.checked) {
+                normalCount = tripData.asientos.length;
+                discountCount = 0;
+                discountedSeats = [];
+            }
+
+            const subtotalSinDescuento = (normalCount + discountCount) * precioUnitario;
+            const ahorro = discountCount * (precioUnitario * 0.5);
+            const total = subtotalSinDescuento - ahorro;
+
+            document.getElementById('res-subtotal').innerText = `$${subtotalSinDescuento.toFixed(2)}`;
+            
+            if (ahorro > 0) {
+                document.getElementById('row-descuento').style.display = 'flex';
+                document.getElementById('res-descuento').innerText = `-$${ahorro.toFixed(2)}`;
+            } else {
+                document.getElementById('row-descuento').style.display = 'none';
+            }
+
+            document.getElementById('res-total').innerText = `$${total.toFixed(2)}`;
+        }
+
+        // 4. FUNCIONES DE PERSISTENCIA DATOS PASAJERO (NUEVO)
+        function guardarDatosPasajero() {
+            const checkboxes = document.querySelectorAll('.checkbox-seat');
+            let asientosDescuento = [];
+            checkboxes.forEach(cb => {
+                if (cb.checked) asientosDescuento.push(cb.value);
+            });
+
+            const passengerData = {
+                nombre: document.getElementById('nombre').value,
+                cedula: document.getElementById('cedula').value,
+                celular: document.getElementById('celular').value,
+                email: document.getElementById('email').value,
+                esPreferencial: document.getElementById('preferencial-toggle').checked,
+                asientosDescuento: asientosDescuento
+            };
+            
+            localStorage.setItem('passengerData', JSON.stringify(passengerData));
+        }
+
+        function restaurarDatosPasajero() {
+            const stored = localStorage.getItem('passengerData');
+            if (!stored) return;
+
+            const data = JSON.parse(stored);
+            
+            // Llenar campos
+            if(data.nombre) document.getElementById('nombre').value = data.nombre;
+            if(data.cedula) document.getElementById('cedula').value = data.cedula;
+            if(data.celular) document.getElementById('celular').value = data.celular;
+            if(data.email) document.getElementById('email').value = data.email;
+
+            // Restaurar toggle y checkboxes
+            if(data.esPreferencial) {
+                document.getElementById('preferencial-toggle').checked = true;
+                toggleDiscountSection(); // Mostrar sección
+                
+                // Restaurar checkboxes de asientos
+                if(data.asientosDescuento && Array.isArray(data.asientosDescuento)) {
+                    data.asientosDescuento.forEach(seatId => {
+                        const cb = document.querySelector(`.checkbox-seat[value="${seatId}"]`);
+                        if(cb) cb.checked = true;
+                    });
+                }
+            }
+        }
+
+        // 5. FUNCIONES DE MODALES Y ALERTAS
+        function showAlert(message) {
+            const alertBox = document.getElementById('customAlert');
+            const alertMsg = document.getElementById('alertMessage');
+            alertMsg.innerText = message;
+            alertBox.classList.remove('hidden');
+        }
+
+        function closeCustomAlert() {
+            document.getElementById('customAlert').classList.add('hidden');
+        }
+
+        // FUNCIÓN AUXILIAR PARA NAVEGACIÓN SEGURA (FIX)
+        function navegarA(url) {
+            const link = document.createElement('a');
+            link.href = url;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        const modalCancel = document.getElementById('cancelModal');
+
+        function mostrarModalCancelar() { modalCancel.style.display = 'flex'; }
+        function cerrarModalCancelar() { modalCancel.style.display = 'none'; }
+
+        function confirmarCancelacion() {
+            localStorage.removeItem('tripData');
+            localStorage.removeItem('passengerData'); // Limpiar todo
+            
+            // Navegación segura
+            navegarA('ticket.html');
+            cerrarModalCancelar();
+        }
+
+        // 6. ENVÍO A WHATSAPP
+        function enviarWhatsApp() {
+            const nombre = document.getElementById('nombre').value;
+            const cedula = document.getElementById('cedula').value;
+            const celular = document.getElementById('celular').value;
+            
+            if (!nombre || !cedula || !celular) {
+                showAlert("Por favor, completa los campos obligatorios:\n- Nombre\n- Cédula\n- Celular");
+                return;
+            }
+
+            const totalPagar = document.getElementById('res-total').innerText;
+            const telefonoCooperativa = "593980048508";
+
+            // Identificar asientos normales (re-calcular para asegurar)
+            const checkboxes = document.querySelectorAll('.checkbox-seat');
+            let finalDiscounted = [];
+            checkboxes.forEach(cb => { if (cb.checked) finalDiscounted.push(cb.value); });
+            
+            // Si el toggle está apagado, limpiar
+            if (!document.getElementById('preferencial-toggle').checked) {
+                finalDiscounted = [];
+            }
+
+            const normalSeats = tripData.asientos.filter(s => !finalDiscounted.includes(s));
+
+            let mensaje = `👋 Hola Cooperativa Oriental, deseo confirmar la compra de mis boletos:%0A%0A`;
+            mensaje += `🚌 *VIAJE:* ${tripData.rutaTexto}%0A`;
+            mensaje += `🔄 *TRAYECTO:* ${tripData.sentidoTexto}%0A`;
+            mensaje += `📅 *FECHA:* ${tripData.fecha} - ${tripData.hora}%0A`;
+            
+            mensaje += `💺 *DETALLE DE ASIENTOS:*%0A`;
+            if (normalSeats.length > 0) {
+                mensaje += `   • Tarifa Normal: ${normalSeats.join(', ')}%0A`;
+            }
+            if (finalDiscounted.length > 0) {
+                mensaje += `   • Tarifa Preferencial (50%): ${finalDiscounted.join(', ')}%0A`;
+            }
+            
+            mensaje += `%0A👤 *DATOS DEL PASAJERO:*%0A`;
+            mensaje += `Nombre: ${nombre}%0A`;
+            mensaje += `Cédula: ${cedula}%0A`;
+            mensaje += `Celular: ${celular}%0A`;
+            
+            mensaje += `%0A💰 *TOTAL A PAGAR:* ${totalPagar}`;
+
+            // LIMPIAR DATOS AL ENVIAR
+            localStorage.removeItem('tripData');
+            localStorage.removeItem('passengerData');
+            
+            window.open(`https://wa.me/${telefonoCooperativa}?text=${mensaje}`, '_blank');
+            
+            setTimeout(() => {
+                // Navegación segura al inicio
+                navegarA('index.html');
+            }, 1000);
+        }
+
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

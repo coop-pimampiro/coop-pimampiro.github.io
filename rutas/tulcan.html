@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruta Pimampiro - Tulcán | Cooperativa Oriental</title>
+    <meta name="description" content="Horarios, precios y paradas de la ruta Pimampiro - Tulcán. Viaja hacia la frontera norte con seguridad. Salida diaria.">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="https://coop-pimampiro.github.io/img/coop_pimam_logo.ico" type="image/x-icon">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Iconos (FontAwesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, h4, h5, h6, .font-heading {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        /* COLORES CORPORATIVOS */
+        .text-oriental-teal { color: #00897b; }
+        .bg-oriental-teal { background-color: #00897b; }
+        .bg-oriental-dark { background-color: #004d40; }
+        .text-oriental-dark { color: #004d40; }
+        .text-oriental-orange { color: #fb8c00; }
+        .bg-oriental-orange { background-color: #fb8c00; }
+        .border-oriental-gold { border-color: #c5a017; }
+        .text-oriental-gold { color: #c5a017; }
+
+        /* Banner de Cabecera */
+        .page-header {
+            background-image: linear-gradient(rgba(0, 77, 64, 0.7), rgba(0, 77, 64, 0.6)), url('https://coop-pimampiro.github.io/img/fotos/tulcan.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Submenú Dropdown */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 100;
+            border-top: 3px solid #fb8c00;
+            border-radius: 0 0 8px 8px;
+        }
+        .group:hover .dropdown-menu {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Tabla de Precios */
+        .price-card {
+            transition: all 0.3s ease;
+        }
+        .price-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+
+        /* ESTILOS TIMELINE CORREGIDOS */
+        .timeline-container {
+            max-height: 600px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #fb8c00 #f3f4f6;
+            padding-right: 10px;
+        }
+        .timeline-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .timeline-container::-webkit-scrollbar-track {
+            background: #f3f4f6;
+        }
+        .timeline-container::-webkit-scrollbar-thumb {
+            background-color: #fb8c00;
+            border-radius: 20px;
+        }
+
+        /* Línea continua que se adapta al scroll */
+        .timeline-line {
+            position: absolute;
+            left: 21px; 
+            top: 24px; 
+            bottom: 24px;
+            width: 6px; 
+            z-index: 0;
+            border-radius: 4px;
+        }
+        
+        .line-ida { background-color: #fb8c00; }
+        .line-vuelta { background-color: #00897b; }
+
+        .stop-item {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stop-dot {
+            width: 1.5rem; /* w-6 */
+            height: 1.5rem; /* h-6 */
+            background-color: white;
+            border-radius: 9999px;
+            border-style: solid;
+            border-width: 4px;
+            margin-left: 0.6rem;
+        }
+
+        /* Botón WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+
+        /* Tabs Styles */
+        .tab-btn.active {
+            border-bottom: 4px solid #fb8c00;
+            color: #004d40;
+            font-weight: 800;
+            background-color: #fff7ed;
+        }
+        .tab-btn {
+            color: #6b7280;
+            font-weight: 600;
+            border-bottom: 4px solid transparent;
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="../index" class="flex items-center gap-3">
+                        <img src="https://coop-pimampiro.github.io/img/coop_pimam_logo.png" alt="Logo Oriental" class="h-14 w-auto drop-shadow-md">
+                        <div class="flex flex-col">
+                            <span class="font-heading font-extrabold text-2xl tracking-tight text-oriental-orange" style="text-shadow: 1px 1px 0px rgba(0,0,0,0.1);">ORIENTAL</span>
+                            <span class="text-xs font-bold text-oriental-teal tracking-widest uppercase">Pimampiro</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Menú Desktop -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="../index" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Inicio</a>
+                    
+                    <div class="relative group h-full flex items-center">
+                        <a href="../rutas" class="text-oriental-teal font-bold transition flex items-center gap-1 cursor-pointer py-6 border-b-2 border-oriental-orange">
+                            Rutas <i class="fa-solid fa-chevron-down text-xs opacity-70"></i>
+                        </a>
+                        <div class="dropdown-menu top-16 left-0">
+                            <a href="ibarra" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-oriental-orange transition border-b border-gray-100">
+                                <i class="fa-solid fa-location-dot mr-2 text-oriental-teal"></i> Ibarra
+                            </a>
+                            <a href="tulcan" class="block px-4 py-3 text-sm font-bold text-oriental-orange bg-orange-50 transition border-b border-gray-100">
+                                <i class="fa-solid fa-location-dot mr-2 text-oriental-teal"></i> Tulcán
+                            </a>
+                            <a href="quito" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-oriental-orange transition">
+                                <i class="fa-solid fa-location-dot mr-2 text-oriental-teal"></i> Quito
+                            </a>
+                        </div>
+                    </div>
+
+                    <a href="../sobre_nosotros" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Sobre Nosotros</a>
+                    <a href="../contacto" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Contacto</a>
+                    
+                    <a href="../ticket" class="bg-oriental-orange text-white px-6 py-2 rounded-full font-bold flex items-center gap-2 hover:bg-orange-600 shadow-md transition transform hover:-translate-y-1">
+                        <i class="fa-solid fa-ticket"></i> Comprar Boleto
+                    </a>
+                </div>
+
+                <!-- Botón Menú Móvil -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-oriental-teal focus:outline-none">
+                        <i class="fa-solid fa-bars text-3xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-oriental-gold">
+            <div class="px-4 pt-2 pb-6 space-y-1">
+                <a href="../index" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Inicio</a>
+                <div class="block px-3 py-2 text-base font-medium text-gray-600">
+                    <span class="block mb-2 font-bold text-oriental-teal">Rutas</span>
+                    <div class="pl-4 space-y-2 border-l-2 border-oriental-orange">
+                        <a href="../rutas" class="block text-sm text-gray-600 hover:text-oriental-orange">Ver todas</a>
+                        <a href="ibarra" class="block text-sm text-gray-600 hover:text-oriental-orange">→ Ibarra</a>
+                        <a href="tulcan" class="block text-sm font-bold text-oriental-orange">→ Tulcán</a>
+                        <a href="quito" class="block text-sm text-gray-600 hover:text-oriental-orange">→ Quito</a>
+                    </div>
+                </div>
+                <a href="../sobre_nosotros" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Sobre Nosotros</a>
+                <a href="../contacto" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Contacto</a>
+                <a href="../ticket" class="block px-3 py-3 mt-4 text-center rounded-md text-base font-bold bg-oriental-orange text-white">
+                    <i class="fa-solid fa-ticket"></i> Comprar Boleto
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header (Banner Tulcán) -->
+    <header class="page-header h-96 relative flex items-center justify-center text-center px-4 mt-20">
+        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-80"></div>
+        <div class="max-w-4xl mx-auto text-white z-10">
+            <div class="inline-block bg-blue-600 px-4 py-1 rounded-full text-sm font-bold tracking-wider mb-4 shadow-lg animate-bounce">
+                DESTINO FRONTERA
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 drop-shadow-xl font-heading">
+                Pimampiro – Tulcán
+            </h1>
+            <p class="text-lg md:text-xl font-medium text-gray-100 flex items-center justify-center gap-2">
+                <i class="fa-solid fa-location-dot text-oriental-orange"></i> Terminal Terrestre Tulcán
+            </p>
+        </div>
+    </header>
+
+    <!-- Información de la Ruta -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="flex flex-col lg:flex-row gap-12">
+                
+                <!-- Columna Izquierda: Información Técnica, Precios y Paradas -->
+                <div class="lg:w-2/3 space-y-12">
+                    
+                    <!-- Intro -->
+                    <div>
+                        <h2 class="text-3xl font-heading font-bold text-oriental-dark mb-4 border-l-4 border-oriental-orange pl-4">Información General</h2>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            Conectamos Pimampiro con la frontera norte del país. Nuestra ruta hacia Tulcán es ideal para actividades comerciales y turísticas, brindando un servicio seguro y puntual en unidades confortables.
+                        </p>
+                    </div>
+
+                    <!-- Datos Técnicos -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 flex items-start gap-4">
+                            <div class="bg-teal-100 text-oriental-teal p-3 rounded-lg text-2xl">
+                                <i class="fa-solid fa-chair"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Capacidad</h4>
+                                <p class="text-gray-600 text-sm mt-1">41 Asientos</p>
+                                <p class="text-gray-500 text-xs">+ 2 Tripulación</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 flex items-start gap-4">
+                            <div class="bg-orange-100 text-oriental-orange p-3 rounded-lg text-2xl">
+                                <i class="fa-solid fa-calendar-days"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Frecuencia</h4>
+                                <p class="text-gray-600 text-sm mt-1">Diaria</p>
+                                <p class="text-gray-500 text-xs font-bold text-oriental-orange">Un turno al día</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 flex items-start gap-4">
+                            <div class="bg-teal-100 text-oriental-teal p-3 rounded-lg text-2xl">
+                                <i class="fa-solid fa-hourglass-half"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Tiempo</h4>
+                                <p class="text-gray-600 text-sm mt-1">2h 00m</p>
+                                <p class="text-gray-500 text-xs">Aproximado</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Precios -->
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                            <i class="fa-solid fa-tag text-oriental-orange"></i> Tarifas
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="price-card bg-white border-2 border-oriental-teal rounded-2xl p-6 text-center shadow-sm relative overflow-hidden">
+                                <div class="absolute top-0 right-0 bg-oriental-teal text-white text-xs font-bold px-3 py-1 rounded-bl-lg">ESTÁNDAR</div>
+                                <p class="text-gray-500 text-sm font-bold uppercase tracking-wide">Pasaje Normal</p>
+                                <div class="text-5xl font-extrabold text-oriental-dark my-4">$3,50</div>
+                                <p class="text-gray-400 text-xs">Por persona / solo ida</p>
+                            </div>
+
+                            <div class="price-card bg-white border-2 border-oriental-orange rounded-2xl p-6 text-center shadow-sm relative overflow-hidden">
+                                <div class="absolute top-0 right-0 bg-oriental-orange text-white text-xs font-bold px-3 py-1 rounded-bl-lg">PREFERENCIAL</div>
+                                <p class="text-gray-500 text-sm font-bold uppercase tracking-wide">Tarifa Especial (50%)</p>
+                                <div class="text-5xl font-extrabold text-oriental-orange my-4">$1,75</div>
+                                <p class="text-gray-400 text-xs">Discapacidad, Tercera Edad, Niños, Embarazadas</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NUEVA SECCIÓN: Recorrido y Paradas -->
+                    <div id="recorrido" class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-6 bg-oriental-dark text-white">
+                            <h3 class="text-xl font-bold flex items-center gap-2">
+                                <i class="fa-solid fa-route text-oriental-orange"></i> Recorrido y Paradas
+                            </h3>
+                            <p class="text-sm text-gray-300 mt-1">Lista detallada con horarios y ubicación en mapa.</p>
+                        </div>
+                        
+                        <!-- Tabs Header -->
+                        <div class="flex border-b border-gray-200">
+                            <button onclick="switchTab('ida')" id="tab-ida" class="tab-btn active flex-1 py-4 text-center hover:bg-gray-50 transition focus:outline-none flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-arrow-right"></i> <span>Ida</span>
+                            </button>
+                            <button onclick="switchTab('vuelta')" id="tab-vuelta" class="tab-btn flex-1 py-4 text-center hover:bg-gray-50 transition focus:outline-none flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-arrow-left"></i> <span>Vuelta</span>
+                            </button>
+                        </div>
+
+                        <!-- Tab Content: IDA -->
+                        <div id="content-ida" class="tab-content active p-6 timeline-container bg-white">
+                            <!-- Wrapper relativo para que la línea crezca con el contenido -->
+                            <div class="relative">
+                                <div class="timeline-line line-ida"></div>
+                                <div id="list-ida" class="space-y-4 pt-1 pb-1">
+                                    <!-- Se llena con JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab Content: VUELTA -->
+                        <div id="content-vuelta" class="tab-content p-6 timeline-container bg-white">
+                            <!-- Wrapper relativo para que la línea crezca con el contenido -->
+                            <div class="relative">
+                                <div class="timeline-line line-vuelta"></div>
+                                <div id="list-vuelta" class="space-y-4 pt-1 pb-1">
+                                    <!-- Se llena con JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Itinerario (Sticky) -->
+                <div class="lg:w-1/3">
+                    <div class="bg-oriental-dark text-white rounded-2xl shadow-2xl p-8 sticky top-28">
+                        <div class="flex items-center justify-between mb-8">
+                            <h3 class="text-2xl font-bold font-heading">Horarios</h3>
+                            <i class="fa-regular fa-clock text-3xl text-oriental-orange"></i>
+                        </div>
+
+                        <!-- Turno Único -->
+                        <div class="relative border-l-2 border-gray-600 pl-6 pb-4">
+                            <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-oriental-orange border-2 border-oriental-dark"></div>
+                            <h4 class="text-lg font-bold text-oriental-orange mb-1">Turno Único</h4>
+                            <div class="space-y-2 mt-3">
+                                <div class="flex justify-between items-center bg-white/10 p-3 rounded-lg">
+                                    <span class="text-sm text-gray-300">Salida (Pimampiro)</span>
+                                    <span class="font-bold text-xl">06:30</span>
+                                </div>
+                                <div class="flex justify-center text-gray-500 my-1">
+                                    <i class="fa-solid fa-arrow-down"></i>
+                                </div>
+                                <div class="flex justify-between items-center bg-white/10 p-3 rounded-lg">
+                                    <span class="text-sm text-gray-300">Retorno (Tulcán)</span>
+                                    <span class="font-bold text-xl">14:00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-gray-700 text-center">
+                            <p class="text-sm text-gray-400 mb-4">Intervalo: Ninguno (Horarios fijos)</p>
+                            <a href="../ticket" class="block w-full bg-oriental-orange hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition shadow-lg">
+                                <i class="fa-solid fa-ticket mr-2"></i> Reservar Asiento
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-oriental-dark text-white pt-16 pb-8 border-t-4 border-oriental-gold">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <!-- Info Empresa -->
+                <div>
+                    <h3 class="text-xl font-heading font-bold mb-4 flex items-center gap-2 text-oriental-orange">
+                        <i class="fa-solid fa-bus"></i> ORIENTAL
+                    </h3>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                        Conectando destinos desde 1971. Seguridad, confort y la mejor atención en cada viaje.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/profile.php?id=61580118043717" target="_blank" class="bg-blue-600 hover:bg-blue-700 w-10 h-10 rounded-full flex items-center justify-center transition">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://wa.me/593980048508" target="_blank" class="bg-green-500 hover:bg-green-600 w-10 h-10 rounded-full flex items-center justify-center transition">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Enlaces Rápidos -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4 text-oriental-gold">Navegación</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="../index" class="hover:text-oriental-orange transition">Inicio</a></li>
+                        <li><a href="../rutas" class="hover:text-oriental-orange transition">Rutas y Horarios</a></li>
+                        <li><a href="../sobre_nosotros" class="hover:text-oriental-orange transition">Quiénes Somos</a></li>
+                        <li><a href="../contacto" class="hover:text-oriental-orange transition">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contacto -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4 text-oriental-gold">Contáctanos</h4>
+                    <ul class="space-y-4 text-sm text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-phone mt-1 text-oriental-orange"></i>
+                            <span>+593 98 004 8508</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-envelope mt-1 text-oriental-orange"></i>
+                            <span>coop.oriental1971@gmail.com</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-location-arrow mt-1 text-oriental-orange"></i>
+                            <span>Pimampiro, Ecuador</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-teal-900 pt-8 text-center">
+                <p class="text-sm text-gray-400">&copy; 2025 Cooperativa de Transporte Oriental. <span class="text-gray-600">|</span> Pimampiro</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botón Flotante WhatsApp -->
+    <a href="https://wa.me/593980048508" class="whatsapp-float hover:shadow-orange-500/50" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script>
+        // Menu Móvil
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Tabs Logic
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('content-' + tabName).classList.add('active');
+            document.getElementById('tab-' + tabName).classList.add('active');
+        }
+
+        // --- DATOS DE PARADAS CON COORDENADAS ---
+        const stopsIda = [
+            { name: "Terminal Terrestre Pimampiro", lat: 0.39012771, lng: -77.941837 },
+            { name: "Parada P-P 1", lat: 0.39085962, lng: -77.941082 },
+            { name: "Parada P-P 2", lat: 0.39113538, lng: -77.940572 },
+            { name: "Parada P-P 3", lat: 0.39199584, lng: -77.939258 },
+            { name: "Parada P-P 4", lat: 0.39341611, lng: -77.940002 },
+            { name: "Parada P-P 5", lat: 0.39460624, lng: -77.940462 },
+            { name: "Parada P-P 6", lat: 0.39411070, lng: -77.938146 },
+            { name: "Parada P-P 7", lat: 0.40100059, lng: -77.937958 },
+            { name: "Parada P-P 8", lat: 0.41183303, lng: -77.945536 },
+            { name: "Parada P-P 9", lat: 0.41367524, lng: -77.946340 },
+            { name: "Parada P-P 10", lat: 0.42555368, lng: -77.961764 },
+            { name: "Parada P-P 11", lat: 0.42677698, lng: -77.962790 },
+            { name: "Parada P-P 12", lat: 0.43396334, lng: -77.966529 },
+            { name: "Parada P-P 13", lat: 0.43406390, lng: -77.966340 },
+            { name: "Parada P-T 1", lat: 0.44080447, lng: -77.955016 },
+            { name: "Parada P-T 2", lat: 0.48613263, lng: -77.935969 },
+            { name: "Parada P-T 3", lat: 0.49887554, lng: -77.931542 },
+            { name: "Parada P-T 4", lat: 0.50833112, lng: -77.901925 },
+            { name: "Parada P-T 5", lat: 0.51408678, lng: -77.880173 },
+            { name: "Parada P-T 6", lat: 0.51396445, lng: -77.864979 },
+            { name: "Parada P-T 7", lat: 0.58457961, lng: -77.827586 },
+            { name: "Parada P-T 8", lat: 0.58714225, lng: -77.826795 },
+            { name: "Parada P-T 9", lat: 0.59704449, lng: -77.831415 },
+            { name: "Parada P-T 10", lat: 0.60384191, lng: -77.809879 },
+            { name: "Parada P-T 11", lat: 0.62775874, lng: -77.728107 },
+            { name: "Parada P-T 12", lat: 0.63321572, lng: -77.726091 },
+            { name: "Parada P-T 13", lat: 0.63506408, lng: -77.726229 },
+            { name: "Parada P-T 14", lat: 0.64040080, lng: -77.725838 },
+            { name: "Parada P-T 15", lat: 0.65266651, lng: -77.722564 },
+            { name: "Parada P-T 16", lat: 0.65842202, lng: -77.720636 },
+            { name: "Parada P-T 17", lat: 0.66035227, lng: -77.719406 },
+            { name: "Parada P-T 18", lat: 0.66361772, lng: -77.716468 },
+            { name: "Parada P-T 19", lat: 0.77541731, lng: -77.740860 },
+            { name: "Parada P-T 20", lat: 0.78577942, lng: -77.744012 },
+            { name: "Parada P-T 21", lat: 0.79832464, lng: -77.733661 },
+            { name: "Parada P-T 22", lat: 0.80078765, lng: -77.731254 },
+            { name: "Parada P-T 23", lat: 0.80206684, lng: -77.730352 },
+            { name: "Terminal Terrestre Tulcan", lat: 0.80488437, lng: -77.728048 }
+        ];
+
+        const stopsVuelta = [
+            { name: "Terminal Terrestre Tulcan", lat: 0.80488437, lng: -77.728048 },
+            { name: "Parada P-T 23", lat: 0.80206684, lng: -77.730352 },
+            { name: "Parada P-T 22", lat: 0.80078765, lng: -77.731254 },
+            { name: "Parada P-T 21", lat: 0.79832464, lng: -77.733661 },
+            { name: "Parada P-T 20", lat: 0.78577942, lng: -77.744012 },
+            { name: "Parada P-T 19", lat: 0.77541731, lng: -77.740860 },
+            { name: "Parada P-T 18", lat: 0.66361772, lng: -77.716468 },
+            { name: "Parada P-T 17", lat: 0.66035227, lng: -77.719406 },
+            { name: "Parada P-T 16", lat: 0.65842202, lng: -77.720636 },
+            { name: "Parada P-T 15", lat: 0.65266651, lng: -77.722564 },
+            { name: "Parada P-T 14", lat: 0.64040080, lng: -77.725838 },
+            { name: "Parada P-T 13", lat: 0.63506408, lng: -77.726229 },
+            { name: "Parada P-T 12", lat: 0.63321572, lng: -77.726091 },
+            { name: "Parada P-T 11", lat: 0.62775874, lng: -77.728107 },
+            { name: "Parada P-T 10", lat: 0.60384191, lng: -77.809879 },
+            { name: "Parada P-T 9", lat: 0.59704449, lng: -77.831415 },
+            { name: "Parada P-T 8", lat: 0.58714225, lng: -77.826795 },
+            { name: "Parada P-T 7", lat: 0.58457961, lng: -77.827586 },
+            { name: "Parada P-T 6", lat: 0.51396445, lng: -77.864979 },
+            { name: "Parada P-T 5", lat: 0.51408678, lng: -77.880173 },
+            { name: "Parada P-T 4", lat: 0.50833112, lng: -77.901925 },
+            { name: "Parada P-T 3", lat: 0.49887554, lng: -77.931542 },
+            { name: "Parada P-T 2", lat: 0.48613263, lng: -77.935969 },
+            { name: "Parada P-T 1", lat: 0.44080447, lng: -77.955016 },
+            { name: "Parada P-P 13", lat: 0.43406390, lng: -77.966340 },
+            { name: "Parada P-P 12", lat: 0.43396334, lng: -77.966529 },
+            { name: "Parada P-P 11", lat: 0.42677698, lng: -77.962790 },
+            { name: "Parada P-P 10", lat: 0.42555368, lng: -77.961764 },
+            { name: "Parada P-P 9", lat: 0.41367524, lng: -77.946340 },
+            { name: "Parada P-P 8", lat: 0.41183303, lng: -77.945536 },
+            { name: "Parada P-P 7", lat: 0.40100059, lng: -77.937958 },
+            { name: "Parada P-P 14", lat: 0.39444708, lng: -77.938311 },
+            { name: "Parada P-P 15", lat: 0.39419835, lng: -77.941243 },
+            { name: "Parada P-P 16", lat: 0.39210821, lng: -77.941834 },
+            { name: "Parada P-P 17", lat: 0.39101630, lng: -77.941049 },
+            { name: "Terminal Terrestre Pimampiro", lat: 0.39012771, lng: -77.941837 }
+        ];
+
+        // Función para renderizar lista con tiempos calculados y enlaces al mapa
+        function renderStops(containerId, stopsList, startTimeStr, colorClass, iconColor, isIda = false) {
+            const container = document.getElementById(containerId);
+            
+            // Configuración de tiempos
+            let [startHour, startMin] = startTimeStr.split(':').map(Number);
+            let currentDate = new Date();
+            currentDate.setHours(startHour, startMin, 0, 0);
+
+            // Índices especiales para IDA
+            const indexPP13 = stopsList.findIndex(s => s.name === "Parada P-P 13");
+            const indexLast = stopsList.length - 1;
+
+            // Constantes de tiempo
+            const dwellTimeMs = 20 * 1000; // 20 segundos de espera por parada normal (en ms)
+            const longWaitMinutes = 15; // 15 minutos en P-P 13
+
+            // Cálculo de intervalos de VIAJE puro (distribución de tiempo de conducción)
+            let travelIntervalMsSeg1 = 0;
+            let travelIntervalMsSeg2 = 0;
+            
+            if (isIda) {
+                // Segmento 1: Pimampiro -> P-P 13 (Objetivo: 30 mins TOTAL llegada)
+                // Esto incluye el tiempo de viaje + las paradas intermedias de 20s
+                const segment1TotalMinutes = 30; 
+                // Paradas intermedias entre Inicio y P-P 13 (indices 1 a 12) = indexPP13 - 1
+                const intermediateStopsSeg1 = indexPP13 - 1;
+                const totalDwellSeg1Ms = intermediateStopsSeg1 * dwellTimeMs;
+                const totalAvailableTravelSeg1Ms = (segment1TotalMinutes * 60 * 1000) - totalDwellSeg1Ms;
+                // Intervalos de viaje = indexPP13 (tramos entre paradas)
+                travelIntervalMsSeg1 = totalAvailableTravelSeg1Ms / indexPP13;
+
+                // Segmento 2: P-P 13 -> Tulcan (Objetivo: ~90 mins conducción + paradas cortas)
+                const segment2TotalMinutes = 90;
+                // Paradas restantes tras P-P 13 hasta el final
+                const stopsRemaining = indexLast - indexPP13; 
+                const intermediateStopsSeg2 = stopsRemaining - 1; // Excluye P-P 13 y Final
+                const totalDwellSeg2Ms = intermediateStopsSeg2 * dwellTimeMs;
+                const totalAvailableTravelSeg2Ms = (segment2TotalMinutes * 60 * 1000) - totalDwellSeg2Ms;
+                travelIntervalMsSeg2 = totalAvailableTravelSeg2Ms / stopsRemaining;
+                
+            } else {
+                // Vuelta: Total 120 mins
+                const totalDurationMinutes = 120;
+                const intervals = stopsList.length - 1;
+                const intermediateStops = intervals - 1;
+                const totalDwellMs = intermediateStops * dwellTimeMs;
+                const totalAvailableTravelMs = (totalDurationMinutes * 60 * 1000) - totalDwellMs;
+                travelIntervalMsSeg1 = totalAvailableTravelMs / intervals;
+            }
+
+            let html = '';
+
+            stopsList.forEach((stopObj, index) => {
+                const stopName = stopObj.name;
+                const stopLat = stopObj.lat;
+                const stopLng = stopObj.lng;
+
+                const timeString = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+                
+                const isFirst = index === 0;
+                const isLast = index === stopsList.length - 1;
+                const isWaitStop = isIda && stopName === "Parada P-P 13";
+                
+                let iconHtml = '';
+                let textClass = 'text-gray-600';
+                
+                // Iconos
+                if (isFirst) {
+                    iconHtml = `<div class="w-12 h-12 bg-${iconColor} rounded-full flex items-center justify-center text-white z-10 shadow-lg border-4 border-white">
+                                    <i class="fa-solid fa-bus text-lg"></i>
+                                </div>`;
+                    textClass = `font-bold text-${iconColor} text-lg`;
+                } else if (isLast) {
+                    iconHtml = `<div class="w-12 h-12 bg-oriental-dark rounded-full flex items-center justify-center text-white z-10 shadow-lg border-4 border-white">
+                                    <i class="fa-solid fa-flag-checkered text-lg"></i>
+                                </div>`;
+                    textClass = 'font-bold text-oriental-dark text-lg';
+                } else {
+                    iconHtml = `<div class="stop-dot border-${colorClass}"></div>`;
+                }
+
+                // Mensaje especial para parada de espera
+                let extraBadge = '';
+                if (isFirst) extraBadge = '<span class="text-xs font-bold text-white bg-green-500 px-2 rounded ml-2">Salida</span>';
+                if (isLast) extraBadge = '<span class="text-xs font-bold text-white bg-red-500 px-2 rounded ml-2">Llegada</span>';
+                if (isWaitStop) extraBadge = '<span class="text-xs font-bold text-white bg-blue-500 px-2 rounded ml-2"><i class="fa-regular fa-clock"></i> Espera 15 min</span>';
+
+                // Enlace a Google Maps
+                // Usamos la API de búsqueda universal de Google Maps con las coordenadas
+                const mapLink = `https://www.google.com/maps/search/?api=1&query=${stopLat},${stopLng}`;
+
+                html += `
+                    <div class="stop-item flex items-center gap-6">
+                        <div class="flex-shrink-0 w-12 flex justify-center">
+                            ${iconHtml}
+                        </div>
+                        <div class="flex-grow bg-gray-50 p-3 rounded-lg border border-gray-100 flex justify-between items-center hover:bg-white hover:shadow-sm transition ${isWaitStop ? 'border-l-4 border-blue-500 shadow-md bg-blue-50' : ''}">
+                            <div>
+                                <h5 class="${textClass}">${stopName} ${extraBadge}</h5>
+                                <a href="${mapLink}" target="_blank" class="inline-flex items-center gap-1 text-xs text-blue-500 hover:text-blue-700 font-semibold mt-1 hover:underline">
+                                    <i class="fa-solid fa-map-location-dot"></i> Ver en Mapa
+                                </a>
+                            </div>
+                            <div class="text-right">
+                                <span class="block font-mono font-bold text-gray-700 text-lg">${timeString}</span>
+                                <span class="text-xs text-gray-400">Estimado</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // --- CÁLCULO PARA LA SIGUIENTE PARADA ---
+                if (!isLast) {
+                    let waitTimeToAdd = 0;
+                    let travelTimeToAdd = 0;
+
+                    // 1. Añadir tiempo de espera en la parada ACTUAL (si aplica)
+                    if (!isFirst) {
+                        if (isWaitStop) {
+                            // Si es P-P 13 en Ida, sumamos los 15 minutos
+                            waitTimeToAdd = longWaitMinutes * 60 * 1000;
+                        } else {
+                            // Parada normal: 20 segundos
+                            waitTimeToAdd = dwellTimeMs;
+                        }
+                    }
+
+                    // 2. Añadir tiempo de viaje hacia la SIGUIENTE parada
+                    if (isIda) {
+                         if (index < indexPP13) {
+                             travelTimeToAdd = travelIntervalMsSeg1;
+                         } else {
+                             travelTimeToAdd = travelIntervalMsSeg2;
+                         }
+                    } else {
+                        travelTimeToAdd = travelIntervalMsSeg1;
+                    }
+
+                    // Actualizar tiempo acumulado
+                    currentDate = new Date(currentDate.getTime() + waitTimeToAdd + travelTimeToAdd);
+                }
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Renderizar Ida (Inicio 06:30, lógica especial activada)
+        renderStops('list-ida', stopsIda, '06:30', 'orange-500', 'oriental-orange', true);
+
+        // Renderizar Vuelta (Inicio 14:00, lógica normal)
+        renderStops('list-vuelta', stopsVuelta, '14:00', 'teal-600', 'oriental-teal', false);
+
+    </script>
+</body>
+</html>

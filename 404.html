@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página No Encontrada | Cooperativa de Transporte Oriental</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="https://coop-pimampiro.github.io/img/coop_pimam_logo.ico" type="image/x-icon">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Iconos (FontAwesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, h4, h5, h6, .font-heading {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        /* COLORES CORPORATIVOS */
+        .text-oriental-teal { color: #00897b; }
+        .bg-oriental-teal { background-color: #00897b; }
+        .bg-oriental-dark { background-color: #004d40; }
+        .text-oriental-dark { color: #004d40; }
+        .text-oriental-orange { color: #fb8c00; }
+        .bg-oriental-orange { background-color: #fb8c00; }
+        .border-oriental-gold { border-color: #c5a017; }
+        .text-oriental-gold { color: #c5a017; }
+
+        /* Submenú Dropdown */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 100;
+            border-top: 3px solid #fb8c00;
+            border-radius: 0 0 8px 8px;
+        }
+        .group:hover .dropdown-menu {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Animación para el icono de error */
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        .animate-bounce-slow {
+            animation: bounce-slow 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="/" class="flex items-center gap-3">
+                        <img src="https://coop-pimampiro.github.io/img/coop_pimam_logo.png" alt="Logo Oriental" class="h-14 w-auto drop-shadow-md">
+                        <div class="flex flex-col">
+                            <span class="font-heading font-extrabold text-2xl tracking-tight text-oriental-orange" style="text-shadow: 1px 1px 0px rgba(0,0,0,0.1);">ORIENTAL</span>
+                            <span class="text-xs font-bold text-oriental-teal tracking-widest uppercase">Pimampiro</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Menú Desktop -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Inicio</a>
+                    
+                    <div class="relative group h-full flex items-center">
+                        <a href="rutas" class="text-gray-600 font-semibold hover:text-oriental-teal transition flex items-center gap-1 cursor-pointer py-6">
+                            Rutas <i class="fa-solid fa-chevron-down text-xs opacity-70"></i>
+                        </a>
+                        <div class="dropdown-menu top-16 left-0">
+                            <a href="rutas/ibarra" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-oriental-orange transition border-b border-gray-100">
+                                <i class="fa-solid fa-location-dot mr-2 text-oriental-teal"></i> Ibarra
+                            </a>
+                            <a href="rutas/tulcan" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-oriental-orange transition border-b border-gray-100">
+                                <i class="fa-solid fa-location-dot mr-2 text-oriental-teal"></i> Tulcán
+                            </a>
+                            <a href="rutas/quito" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-oriental-orange transition">
+                                <i class="fa-solid fa-location-dot mr-2 text-oriental-teal"></i> Quito
+                            </a>
+                        </div>
+                    </div>
+
+                    <a href="sobre_nosotros" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Sobre Nosotros</a>
+                    <a href="contacto" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Contacto</a>
+                    
+                    <a href="ticket" class="bg-oriental-orange text-white px-6 py-2 rounded-full font-bold flex items-center gap-2 hover:bg-orange-600 shadow-md transition transform hover:-translate-y-1">
+                        <i class="fa-solid fa-ticket"></i> Comprar Boleto
+                    </a>
+                </div>
+
+                <!-- Botón Menú Móvil -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-oriental-teal focus:outline-none">
+                        <i class="fa-solid fa-bars text-3xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-oriental-gold">
+            <div class="px-4 pt-2 pb-6 space-y-1">
+                <a href="/" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Inicio</a>
+                <div class="block px-3 py-2 text-base font-medium text-gray-600">
+                    <span class="block mb-2 font-bold text-gray-800">Rutas</span>
+                    <div class="pl-4 space-y-2 border-l-2 border-oriental-orange">
+                        <a href="rutas" class="block text-sm text-gray-500 hover:text-oriental-teal">Ver todas</a>
+                        <a href="rutas/ibarra" class="block text-sm text-gray-600 hover:text-oriental-orange">→ Ibarra</a>
+                        <a href="rutas/tulcan" class="block text-sm text-gray-600 hover:text-oriental-orange">→ Tulcán</a>
+                        <a href="rutas/quito" class="block text-sm text-gray-600 hover:text-oriental-orange">→ Quito</a>
+                    </div>
+                </div>
+                <a href="sobre_nosotros" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Sobre Nosotros</a>
+                <a href="contacto" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Contacto</a>
+                <a href="ticket" class="block px-3 py-3 mt-4 text-center rounded-md text-base font-bold bg-oriental-orange text-white">
+                    <i class="fa-solid fa-ticket"></i> Comprar Boleto
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido 404 -->
+    <main class="flex-grow flex items-center justify-center pt-20 px-4 bg-white relative overflow-hidden">
+        
+        <!-- Fondo Decorativo -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
+            <i class="fa-solid fa-road absolute top-1/4 left-10 text-9xl text-gray-300 transform -rotate-12"></i>
+            <i class="fa-solid fa-cloud absolute top-10 right-20 text-8xl text-oriental-teal"></i>
+            <i class="fa-solid fa-location-dot absolute bottom-20 left-1/3 text-9xl text-oriental-orange"></i>
+        </div>
+
+        <div class="max-w-2xl w-full text-center relative z-10 py-16">
+            
+            <!-- Icono Principal -->
+            <div class="mb-8 relative inline-block">
+                <div class="absolute inset-0 bg-orange-100 rounded-full animate-ping opacity-75"></div>
+                <div class="bg-white p-6 rounded-full shadow-xl relative animate-bounce-slow border-4 border-oriental-orange">
+                    <i class="fa-solid fa-bus-simple text-8xl text-oriental-dark"></i>
+                    <!-- Señal de advertencia superpuesta -->
+                    <div class="absolute -top-2 -right-4 bg-red-500 text-white w-12 h-12 flex items-center justify-center rounded-full border-4 border-white shadow-md">
+                        <span class="text-xl font-bold">!</span>
+                    </div>
+                </div>
+            </div>
+
+            <h1 class="text-6xl md:text-8xl font-extrabold text-oriental-dark mb-2 font-heading tracking-tighter">404</h1>
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-700 mb-4">¡Ups! Ruta no encontrada</h2>
+            
+            <p class="text-gray-500 text-lg mb-10 max-w-md mx-auto">
+                Parece que el destino que buscas no está en nuestro itinerario o la página ha cambiado de ruta.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/" class="bg-oriental-teal text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-teal-700 transition transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-house"></i> Volver al Inicio
+                </a>
+                <a href="contacto" class="bg-white text-gray-700 border-2 border-gray-200 px-8 py-3 rounded-full font-bold hover:border-oriental-orange hover:text-oriental-orange transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-envelope"></i> Contactar Soporte
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-oriental-dark text-white pt-10 pb-5 border-t-4 border-oriental-gold">
+        <div class="text-center">
+            <p class="text-sm text-gray-400">&copy; 2025 Cooperativa de Transporte Oriental. <span class="text-gray-600">|</span> Pimampiro</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

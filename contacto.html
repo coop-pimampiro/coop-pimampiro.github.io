@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto | Cooperativa de Transporte Oriental</title>
+    <meta name="description" content="Contáctanos para consultas sobre boletos, encomiendas y rutas. Escríbenos directamente a nuestro WhatsApp.">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="https://coop-pimampiro.github.io/img/coop_pimam_logo.ico" type="image/x-icon">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Iconos (FontAwesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, h4, h5, h6, .font-heading {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        /* COLORES CORPORATIVOS */
+        .text-oriental-teal { color: #00897b; }
+        .bg-oriental-teal { background-color: #00897b; }
+        .bg-oriental-dark { background-color: #004d40; }
+        .text-oriental-dark { color: #004d40; }
+        .text-oriental-orange { color: #fb8c00; }
+        .bg-oriental-orange { background-color: #fb8c00; }
+        .border-oriental-gold { border-color: #c5a017; }
+        .text-oriental-gold { color: #c5a017; }
+
+        /* Banner de Cabecera */
+        .page-header {
+            background-image: linear-gradient(rgba(0, 77, 64, 0.85), rgba(0, 77, 64, 0.75)), url('https://coop-pimampiro.github.io/img/fotos/pimampiro.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Submenú Dropdown */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 100;
+            border-top: 3px solid #fb8c00;
+            border-radius: 0 0 8px 8px;
+        }
+        .group:hover .dropdown-menu {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Botón WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="/" class="flex items-center gap-3">
+                        <img src="https://coop-pimampiro.github.io/img/coop_pimam_logo.png" alt="Logo Oriental" class="h-14 w-auto drop-shadow-md">
+                        <div class="flex flex-col">
+                            <span class="font-heading font-extrabold text-2xl tracking-tight text-oriental-orange" style="text-shadow: 1px 1px 0px rgba(0,0,0,0.1);">ORIENTAL</span>
+                            <span class="text-xs font-bold text-oriental-teal tracking-widest uppercase">Pimampiro</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Menú Desktop -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Inicio</a>
+                    
+                    <!-- Menú Desplegable "Rutas" -->
+                    <div class="relative group h-full flex items-center">
+                        <a href="rutas" class="text-gray-600 font-semibold hover:text-oriental-teal transition flex items-center gap-1 cursor-pointer py-6">
+                            Rutas <i class="fa-solid fa-chevron-down text-xs opacity-70"></i>
+                        </a>
+                        <div class="dropdown-menu top-16 left-0">
+                            <a href="rutas/ibarra" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-oriental-orange transition border-b border-gray-100">
+                                <i class="fa-solid fa-location-dot mr-2 text-oriental-teal"></i> Ibarra
+                            </a>
+                            <a href="rutas/tulcan" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-oriental-orange transition border-b border-gray-100">
+                                <i class="fa-solid fa-location-dot mr-2 text-oriental-teal"></i> Tulcán
+                            </a>
+                            <a href="rutas/quito" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-oriental-orange transition">
+                                <i class="fa-solid fa-location-dot mr-2 text-oriental-teal"></i> Quito
+                            </a>
+                        </div>
+                    </div>
+
+                    <a href="sobre_nosotros" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Sobre Nosotros</a>
+                    
+                    <!-- Link Activo: Contacto -->
+                    <a href="contacto" class="text-oriental-teal font-bold transition border-b-2 border-oriental-orange">Contacto</a>
+                    
+                    <a href="ticket" class="bg-oriental-orange text-white px-6 py-2 rounded-full font-bold flex items-center gap-2 hover:bg-orange-600 shadow-md transition transform hover:-translate-y-1">
+                        <i class="fa-solid fa-ticket"></i> Comprar Boleto
+                    </a>
+                </div>
+
+                <!-- Botón Menú Móvil -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-oriental-teal focus:outline-none">
+                        <i class="fa-solid fa-bars text-3xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-oriental-gold">
+            <div class="px-4 pt-2 pb-6 space-y-1">
+                <a href="/" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Inicio</a>
+                <div class="block px-3 py-2 text-base font-medium text-gray-600">
+                    <span class="block mb-2 font-bold text-gray-600">Rutas</span>
+                    <div class="pl-4 space-y-2 border-l-2 border-oriental-orange">
+                        <a href="rutas" class="block text-sm text-gray-500 hover:text-oriental-orange">Ver todas</a>
+                        <a href="rutas/ibarra" class="block text-sm text-gray-600 hover:text-oriental-orange">→ Ibarra</a>
+                        <a href="rutas/tulcan" class="block text-sm text-gray-600 hover:text-oriental-orange">→ Tulcán</a>
+                        <a href="rutas/quito" class="block text-sm text-gray-600 hover:text-oriental-orange">→ Quito</a>
+                    </div>
+                </div>
+                <a href="sobre_nosotros" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Sobre Nosotros</a>
+                <a href="contacto" class="block px-3 py-3 rounded-md text-base font-bold text-oriental-teal bg-teal-50">Contacto</a>
+                <a href="ticket" class="block px-3 py-3 mt-4 text-center rounded-md text-base font-bold bg-oriental-orange text-white">
+                    <i class="fa-solid fa-ticket"></i> Comprar Boleto
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header (Banner) -->
+    <header class="page-header h-80 relative flex items-center justify-center text-center px-4 mt-20">
+        <div class="max-w-4xl mx-auto text-white z-10">
+            <span class="uppercase tracking-widest text-sm font-bold bg-white text-oriental-teal px-3 py-1 rounded mb-4 inline-block shadow-sm">Atención al Cliente</span>
+            <h1 class="text-3xl md:text-5xl font-extrabold mb-4 drop-shadow-lg">
+                Contáctanos
+            </h1>
+            <p class="text-lg md:text-xl font-light text-gray-100">
+                Estamos listos para ayudarte con tus boletos, rutas y encomiendas.
+            </p>
+        </div>
+    </header>
+
+    <!-- Sección Principal: Formulario e Info -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                
+                <!-- Columna Izquierda: Formulario -->
+                <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100 shadow-lg">
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-heading font-bold text-oriental-dark mb-2">Envíanos un mensaje</h2>
+                        <p class="text-gray-600 text-sm">Completa el formulario y te responderemos vía WhatsApp inmediatamente.</p>
+                    </div>
+
+                    <form id="contactForm" onsubmit="enviarWhatsApp(event)" class="space-y-6">
+                        <!-- Nombre -->
+                        <div>
+                            <label for="nombre" class="block text-sm font-bold text-gray-700 mb-2">Nombres y Apellidos *</label>
+                            <input type="text" id="nombre" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-oriental-orange focus:ring-2 focus:ring-orange-200 outline-none transition" placeholder="Ej: Juan Pérez">
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Cédula -->
+                            <div>
+                                <label for="cedula" class="block text-sm font-bold text-gray-700 mb-2">Cédula *</label>
+                                <input type="number" id="cedula" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-oriental-orange focus:ring-2 focus:ring-orange-200 outline-none transition" placeholder="Ej: 100xxxxxxx">
+                            </div>
+                            <!-- Celular -->
+                            <div>
+                                <label for="celular" class="block text-sm font-bold text-gray-700 mb-2">Celular *</label>
+                                <input type="tel" id="celular" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-oriental-orange focus:ring-2 focus:ring-orange-200 outline-none transition" placeholder="Ej: 099xxxxxxx">
+                            </div>
+                        </div>
+
+                        <!-- Correo (Opcional) -->
+                        <div>
+                            <label for="email" class="block text-sm font-bold text-gray-700 mb-2">Correo Electrónico <span class="font-normal text-gray-400">(Opcional)</span></label>
+                            <input type="email" id="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-oriental-orange focus:ring-2 focus:ring-orange-200 outline-none transition" placeholder="ejemplo@correo.com">
+                        </div>
+
+                        <!-- Mensaje -->
+                        <div>
+                            <label for="mensaje" class="block text-sm font-bold text-gray-700 mb-2">¿En qué podemos ayudarte? *</label>
+                            <textarea id="mensaje" rows="4" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-oriental-orange focus:ring-2 focus:ring-orange-200 outline-none transition" placeholder="Escribe aquí tus dudas sobre horarios, precios, encomiendas, etc..."></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-xl shadow-md transition transform hover:-translate-y-1 flex items-center justify-center gap-2 text-lg">
+                            <i class="fa-brands fa-whatsapp text-2xl"></i> Enviar a WhatsApp
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Columna Derecha: Información de Contacto -->
+                <div class="space-y-10">
+                    <div>
+                        <h2 class="text-2xl font-heading font-bold text-oriental-dark mb-6">Información de Contacto</h2>
+                        <ul class="space-y-6">
+                            <li class="flex items-start gap-4">
+                                <div class="bg-teal-50 p-3 rounded-full text-oriental-teal">
+                                    <i class="fa-solid fa-phone text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">Llámanos</h4>
+                                    <p class="text-gray-600">+593 98 004 8508</p>
+                                    <p class="text-sm text-gray-500">Atención 24/7 para emergencias.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="bg-teal-50 p-3 rounded-full text-oriental-teal">
+                                    <i class="fa-solid fa-envelope text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">Correo Electrónico</h4>
+                                    <p class="text-gray-600 break-all">coop.oriental1971@gmail.com</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="bg-teal-50 p-3 rounded-full text-oriental-teal">
+                                    <i class="fa-solid fa-location-dot text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">Matriz Pimampiro</h4>
+                                    <p class="text-gray-600">Calle Paquisha y Juan Montalvo.</p>
+                                    <a href="https://maps.app.goo.gl/nrhsDgVSUoChM9r18" target="_blank" class="text-oriental-orange font-bold text-sm hover:underline mt-1 inline-block">Ver en Mapa &rarr;</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="border-t border-gray-200 pt-8">
+                        <h3 class="text-xl font-heading font-bold text-oriental-dark mb-4">Otras Ubicaciones</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <a href="https://maps.app.goo.gl/ek9e2cFdUAM4W5Bd8" target="_blank" class="block p-4 border border-gray-200 rounded-lg hover:border-oriental-orange hover:shadow-md transition bg-white group">
+                                <span class="font-bold text-gray-700 group-hover:text-oriental-orange transition">Sucursal Ibarra</span>
+                                <p class="text-xs text-gray-500 mt-1">Terminal Terrestre</p>
+                            </a>
+                            <a href="https://maps.app.goo.gl/67KdRfDgqBwycm2B6" target="_blank" class="block p-4 border border-gray-200 rounded-lg hover:border-oriental-orange hover:shadow-md transition bg-white group">
+                                <span class="font-bold text-gray-700 group-hover:text-oriental-orange transition">Sucursal Tulcán</span>
+                                <p class="text-xs text-gray-500 mt-1">Terminal Terrestre</p>
+                            </a>
+                            <a href="https://maps.app.goo.gl/gnXKG3H97E2XUbW4A" target="_blank" class="block p-4 border border-gray-200 rounded-lg hover:border-oriental-orange hover:shadow-md transition bg-white group">
+                                <span class="font-bold text-gray-700 group-hover:text-oriental-orange transition">Sucursal Quito</span>
+                                <p class="text-xs text-gray-500 mt-1">Terminal Terrestre Quitumbe</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-oriental-dark text-white pt-16 pb-8 border-t-4 border-oriental-gold">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <!-- Info Empresa -->
+                <div>
+                    <h3 class="text-xl font-heading font-bold mb-4 flex items-center gap-2 text-oriental-orange">
+                        <i class="fa-solid fa-bus"></i> ORIENTAL
+                    </h3>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                        Conectando destinos desde 1971. Seguridad, confort y la mejor atención en cada viaje.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/profile.php?id=61580118043717" target="_blank" class="bg-blue-600 hover:bg-blue-700 w-10 h-10 rounded-full flex items-center justify-center transition">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://wa.me/593980048508" target="_blank" class="bg-green-500 hover:bg-green-600 w-10 h-10 rounded-full flex items-center justify-center transition">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Enlaces Rápidos -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4 text-oriental-gold">Navegación</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="/" class="hover:text-oriental-orange transition">Inicio</a></li>
+                        <li><a href="rutas" class="hover:text-oriental-orange transition">Rutas y Horarios</a></li>
+                        <li><a href="sobre_nosotros" class="hover:text-oriental-orange transition">Quiénes Somos</a></li>
+                        <li><a href="contacto" class="text-oriental-orange font-bold transition">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contacto -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4 text-oriental-gold">Contáctanos</h4>
+                    <ul class="space-y-4 text-sm text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-phone mt-1 text-oriental-orange"></i>
+                            <span>+593 98 004 8508</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-envelope mt-1 text-oriental-orange"></i>
+                            <span>coop.oriental1971@gmail.com</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-location-arrow mt-1 text-oriental-orange"></i>
+                            <span>Pimampiro, Ecuador</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-teal-900 pt-8 text-center">
+                <p class="text-sm text-gray-400">&copy; 2025 Cooperativa de Transporte Oriental. <span class="text-gray-600">|</span> Pimampiro</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botón Flotante WhatsApp -->
+    <a href="https://wa.me/593980048508" class="whatsapp-float hover:shadow-orange-500/50" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script>
+        // Menú Móvil
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Función para enviar a WhatsApp
+        function enviarWhatsApp(event) {
+            event.preventDefault(); // Evita que la página se recargue
+
+            const nombre = document.getElementById('nombre').value;
+            const cedula = document.getElementById('cedula').value;
+            const celular = document.getElementById('celular').value;
+            const email = document.getElementById('email').value || "No especificado";
+            const mensaje = document.getElementById('mensaje').value;
+
+            // Número de la cooperativa
+            const telefonoDestino = "593980048508";
+
+            // Construir el mensaje formateado
+            const textoMensaje = `Hola Cooperativa Oriental, me gustaría realizar una consulta.%0A%0A*Mis Datos:*%0A👤 Nombre: ${nombre}%0A🆔 Cédula: ${cedula}%0A📱 Celular: ${celular}%0A📧 Correo: ${email}%0A%0A*Mensaje:*%0A${mensaje}`;
+
+            // Crear la URL de WhatsApp
+            const url = `https://wa.me/${telefonoDestino}?text=${textoMensaje}`;
+
+            // Abrir en nueva pestaña
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>

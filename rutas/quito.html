@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruta Pimampiro - Quito | Cooperativa Oriental</title>
+    <meta name="description" content="Horarios y precios de la ruta Pimampiro - Quito. Viaja cómodo y seguro con nosotros. Salidas diarias.">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="https://coop-pimampiro.github.io/img/coop_pimam_logo.ico" type="image/x-icon">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Iconos (FontAwesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, h4, h5, h6, .font-heading {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        /* COLORES CORPORATIVOS */
+        .text-oriental-teal { color: #00897b; }
+        .bg-oriental-teal { background-color: #00897b; }
+        .bg-oriental-dark { background-color: #004d40; }
+        .text-oriental-dark { color: #004d40; }
+        .text-oriental-orange { color: #fb8c00; }
+        .bg-oriental-orange { background-color: #fb8c00; }
+        .border-oriental-gold { border-color: #c5a017; }
+        .text-oriental-gold { color: #c5a017; }
+
+        /* Banner de Cabecera Específico para Quito */
+        .page-header {
+            background-image: linear-gradient(rgba(0, 77, 64, 0.7), rgba(0, 77, 64, 0.6)), url('https://coop-pimampiro.github.io/img/fotos/quito.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Submenú Dropdown */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 100;
+            border-top: 3px solid #fb8c00;
+            border-radius: 0 0 8px 8px;
+        }
+        .group:hover .dropdown-menu {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Tabla de Precios Personalizada */
+        .price-card {
+            transition: all 0.3s ease;
+        }
+        .price-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Botón WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+
+    <!-- Navbar (Enlaces ajustados con ../ para salir de la carpeta rutas) -->
+    <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="../index" class="flex items-center gap-3">
+                        <img src="https://coop-pimampiro.github.io/img/coop_pimam_logo.png" alt="Logo Oriental" class="h-14 w-auto drop-shadow-md">
+                        <div class="flex flex-col">
+                            <span class="font-heading font-extrabold text-2xl tracking-tight text-oriental-orange" style="text-shadow: 1px 1px 0px rgba(0,0,0,0.1);">ORIENTAL</span>
+                            <span class="text-xs font-bold text-oriental-teal tracking-widest uppercase">Pimampiro</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Menú Desktop -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="../index" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Inicio</a>
+                    
+                    <!-- Menú Desplegable "Rutas" (Activo) -->
+                    <div class="relative group h-full flex items-center">
+                        <a href="../rutas" class="text-oriental-teal font-bold transition flex items-center gap-1 cursor-pointer py-6 border-b-2 border-oriental-orange">
+                            Rutas <i class="fa-solid fa-chevron-down text-xs opacity-70"></i>
+                        </a>
+                        <div class="dropdown-menu top-16 left-0">
+                            <!-- Enlaces a hermanos en la misma carpeta -->
+                            <a href="ibarra" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-oriental-orange transition border-b border-gray-100">
+                                <i class="fa-solid fa-location-dot mr-2 text-oriental-teal"></i> Ibarra
+                            </a>
+                            <a href="tulcan" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-oriental-orange transition border-b border-gray-100">
+                                <i class="fa-solid fa-location-dot mr-2 text-oriental-teal"></i> Tulcán
+                            </a>
+                            <a href="quito" class="block px-4 py-3 text-sm font-bold text-oriental-orange bg-orange-50 transition">
+                                <i class="fa-solid fa-location-dot mr-2 text-oriental-teal"></i> Quito
+                            </a>
+                        </div>
+                    </div>
+
+                    <a href="../sobre_nosotros" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Sobre Nosotros</a>
+                    <a href="../contacto" class="text-gray-600 font-semibold hover:text-oriental-teal transition">Contacto</a>
+                    
+                    <a href="../ticket" class="bg-oriental-orange text-white px-6 py-2 rounded-full font-bold flex items-center gap-2 hover:bg-orange-600 shadow-md transition transform hover:-translate-y-1">
+                        <i class="fa-solid fa-ticket"></i> Comprar Boleto
+                    </a>
+                </div>
+
+                <!-- Botón Menú Móvil -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-oriental-teal focus:outline-none">
+                        <i class="fa-solid fa-bars text-3xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-oriental-gold">
+            <div class="px-4 pt-2 pb-6 space-y-1">
+                <a href="../index" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Inicio</a>
+                <div class="block px-3 py-2 text-base font-medium text-gray-600">
+                    <span class="block mb-2 font-bold text-oriental-teal">Rutas</span>
+                    <div class="pl-4 space-y-2 border-l-2 border-oriental-orange">
+                        <a href="../rutas" class="block text-sm text-gray-600 hover:text-oriental-orange">Ver todas</a>
+                        <a href="ibarra" class="block text-sm text-gray-600 hover:text-oriental-orange">→ Ibarra</a>
+                        <a href="tulcan" class="block text-sm text-gray-600 hover:text-oriental-orange">→ Tulcán</a>
+                        <a href="quito" class="block text-sm font-bold text-oriental-orange">→ Quito</a>
+                    </div>
+                </div>
+                <a href="../sobre_nosotros" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Sobre Nosotros</a>
+                <a href="../contacto" class="block px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:text-oriental-teal">Contacto</a>
+                <a href="../ticket" class="block px-3 py-3 mt-4 text-center rounded-md text-base font-bold bg-oriental-orange text-white">
+                    <i class="fa-solid fa-ticket"></i> Comprar Boleto
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header (Banner Quito) -->
+    <header class="page-header h-96 relative flex items-center justify-center text-center px-4 mt-20">
+        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-80"></div>
+        <div class="max-w-4xl mx-auto text-white z-10">
+            <div class="inline-block bg-oriental-orange px-4 py-1 rounded-full text-sm font-bold tracking-wider mb-4 shadow-lg animate-bounce">
+                DESTINO CAPITAL
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 drop-shadow-xl font-heading">
+                Pimampiro – Quito
+            </h1>
+            <p class="text-lg md:text-xl font-medium text-gray-100 flex items-center justify-center gap-2">
+                <i class="fa-solid fa-location-dot text-oriental-orange"></i> Terminal Terrestre Quitumbe
+            </p>
+        </div>
+    </header>
+
+    <!-- Información de la Ruta -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="flex flex-col lg:flex-row gap-12">
+                
+                <!-- Columna Izquierda: Información Técnica y Precios -->
+                <div class="lg:w-2/3 space-y-12">
+                    
+                    <!-- Intro -->
+                    <div>
+                        <h2 class="text-3xl font-heading font-bold text-oriental-dark mb-4 border-l-4 border-oriental-orange pl-4">Información General</h2>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            Nuestra ruta hacia la capital es operada por unidades modernas y confortables, diseñadas para viajes largos. Disfruta de un trayecto seguro a través de la sierra ecuatoriana con conductores profesionales.
+                        </p>
+                    </div>
+
+                    <!-- Datos Técnicos (Grid Actualizado) -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Capacidad -->
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 flex items-start gap-4">
+                            <div class="bg-teal-100 text-oriental-teal p-3 rounded-lg text-2xl">
+                                <i class="fa-solid fa-chair"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Capacidad</h4>
+                                <p class="text-gray-600 text-sm mt-1">41 Asientos</p>
+                                <p class="text-gray-500 text-xs">+ 2 Tripulación</p>
+                            </div>
+                        </div>
+
+                        <!-- Frecuencia -->
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 flex items-start gap-4">
+                            <div class="bg-orange-100 text-oriental-orange p-3 rounded-lg text-2xl">
+                                <i class="fa-solid fa-calendar-days"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Frecuencia</h4>
+                                <p class="text-gray-600 text-sm mt-1">Diaria</p>
+                                <p class="text-gray-500 text-xs font-bold text-oriental-orange">Todos los días</p>
+                            </div>
+                        </div>
+
+                        <!-- Tiempo de Viaje (Nuevo) -->
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 flex items-start gap-4">
+                            <div class="bg-teal-100 text-oriental-teal p-3 rounded-lg text-2xl">
+                                <i class="fa-solid fa-hourglass-half"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Tiempo</h4>
+                                <p class="text-gray-600 text-sm mt-1">4h 00m</p>
+                                <p class="text-gray-500 text-xs">Aproximado</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Precios -->
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                            <i class="fa-solid fa-tag text-oriental-orange"></i> Tarifas
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Precio Normal -->
+                            <div class="price-card bg-white border-2 border-oriental-teal rounded-2xl p-6 text-center shadow-sm relative overflow-hidden">
+                                <div class="absolute top-0 right-0 bg-oriental-teal text-white text-xs font-bold px-3 py-1 rounded-bl-lg">ESTÁNDAR</div>
+                                <p class="text-gray-500 text-sm font-bold uppercase tracking-wide">Pasaje Normal</p>
+                                <div class="text-5xl font-extrabold text-oriental-dark my-4">$4,35</div>
+                                <p class="text-gray-400 text-xs">Por persona / solo ida</p>
+                            </div>
+
+                            <!-- Precio Especial -->
+                            <div class="price-card bg-white border-2 border-oriental-orange rounded-2xl p-6 text-center shadow-sm relative overflow-hidden">
+                                <div class="absolute top-0 right-0 bg-oriental-orange text-white text-xs font-bold px-3 py-1 rounded-bl-lg">PREFERENCIAL</div>
+                                <p class="text-gray-500 text-sm font-bold uppercase tracking-wide">Tarifa Especial (50%)</p>
+                                <div class="text-5xl font-extrabold text-oriental-orange my-4">$2,18</div>
+                                <p class="text-gray-400 text-xs">Discapacidad, Tercera Edad, Niños, Embarazadas</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Columna Derecha: Itinerario (Sticky) -->
+                <div class="lg:w-1/3">
+                    <div class="bg-oriental-dark text-white rounded-2xl shadow-2xl p-8 sticky top-28">
+                        <div class="flex items-center justify-between mb-8">
+                            <h3 class="text-2xl font-bold font-heading">Horarios</h3>
+                            <i class="fa-regular fa-clock text-3xl text-oriental-orange"></i>
+                        </div>
+
+                        <!-- Turno 1 -->
+                        <div class="relative border-l-2 border-gray-600 pl-6 pb-8">
+                            <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-oriental-orange border-2 border-oriental-dark"></div>
+                            <h4 class="text-lg font-bold text-oriental-orange mb-1">Primer Turno</h4>
+                            <div class="space-y-2 mt-3">
+                                <div class="flex justify-between items-center bg-white/10 p-3 rounded-lg">
+                                    <span class="text-sm text-gray-300">Salida (Pimampiro)</span>
+                                    <span class="font-bold text-xl">04:00</span>
+                                </div>
+                                <div class="flex justify-center text-gray-500 my-1">
+                                    <i class="fa-solid fa-arrow-down"></i>
+                                </div>
+                                <div class="flex justify-between items-center bg-white/10 p-3 rounded-lg">
+                                    <span class="text-sm text-gray-300">Retorno (Quito)</span>
+                                    <span class="font-bold text-xl">10:30</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Turno 2 -->
+                        <div class="relative border-l-2 border-gray-600 pl-6">
+                            <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-oriental-teal border-2 border-oriental-dark"></div>
+                            <h4 class="text-lg font-bold text-oriental-teal mb-1">Segundo Turno</h4>
+                            <div class="space-y-2 mt-3">
+                                <div class="flex justify-between items-center bg-white/10 p-3 rounded-lg">
+                                    <span class="text-sm text-gray-300">Salida (Pimampiro)</span>
+                                    <span class="font-bold text-xl">13:00</span>
+                                </div>
+                                <div class="flex justify-center text-gray-500 my-1">
+                                    <i class="fa-solid fa-arrow-down"></i>
+                                </div>
+                                <div class="flex justify-between items-center bg-white/10 p-3 rounded-lg">
+                                    <span class="text-sm text-gray-300">Retorno (Quito)</span>
+                                    <span class="font-bold text-xl">17:30</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-gray-700 text-center">
+                            <p class="text-sm text-gray-400 mb-4">Intervalo: Ninguno (Horarios fijos)</p>
+                            <a href="../ticket" class="block w-full bg-oriental-orange hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition shadow-lg">
+                                <i class="fa-solid fa-ticket mr-2"></i> Reservar Asiento
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (Rutas relativas ../) -->
+    <footer class="bg-oriental-dark text-white pt-16 pb-8 border-t-4 border-oriental-gold">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <!-- Info Empresa -->
+                <div>
+                    <h3 class="text-xl font-heading font-bold mb-4 flex items-center gap-2 text-oriental-orange">
+                        <i class="fa-solid fa-bus"></i> ORIENTAL
+                    </h3>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                        Conectando destinos desde 1971. Seguridad, confort y la mejor atención en cada viaje.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/profile.php?id=61580118043717" target="_blank" class="bg-blue-600 hover:bg-blue-700 w-10 h-10 rounded-full flex items-center justify-center transition">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://wa.me/593980048508" target="_blank" class="bg-green-500 hover:bg-green-600 w-10 h-10 rounded-full flex items-center justify-center transition">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Enlaces Rápidos -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4 text-oriental-gold">Navegación</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="../index" class="hover:text-oriental-orange transition">Inicio</a></li>
+                        <li><a href="../rutas" class="hover:text-oriental-orange transition">Rutas y Horarios</a></li>
+                        <li><a href="../sobre_nosotros" class="hover:text-oriental-orange transition">Quiénes Somos</a></li>
+                        <li><a href="../contacto" class="hover:text-oriental-orange transition">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contacto -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4 text-oriental-gold">Contáctanos</h4>
+                    <ul class="space-y-4 text-sm text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-phone mt-1 text-oriental-orange"></i>
+                            <span>+593 98 004 8508</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-envelope mt-1 text-oriental-orange"></i>
+                            <span>coop.oriental1971@gmail.com</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-location-arrow mt-1 text-oriental-orange"></i>
+                            <span>Pimampiro, Ecuador</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-teal-900 pt-8 text-center">
+                <p class="text-sm text-gray-400">&copy; 2025 Cooperativa de Transporte Oriental. <span class="text-gray-600">|</span> Pimampiro</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botón Flotante WhatsApp -->
+    <a href="https://wa.me/593980048508" class="whatsapp-float hover:shadow-orange-500/50" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
